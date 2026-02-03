@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>焦糖 Mission Control</title>
     <script>
         const AUTH_CODE = "COOCaramel";
@@ -41,8 +44,8 @@
     <script>
         function refreshData() {
             console.log("Refreshing dashboard data...");
-            // Auto-refresh logic can be enhanced here
-            location.reload();
+            // Force reload avoiding cache
+            location.reload(true);
         }
         setInterval(refreshData, 300000); // Refresh every 5 mins
     </script>
@@ -96,7 +99,7 @@
             <div class="task-item">
                 <span class="task-title">XG (Xtreme Gaming) 战报</span>
                 <span class="status status-ongoing">两连胜! 🔥</span>
-                <div class=\"task-meta\">
+                <div class="task-meta">
                     1. XG 1:0 MOUZ (开门红)<br>
                     2. XG 1:0 Team Yandex (碾压局)<br>
                     下场预告: 00:00 vs GamerLegion
@@ -150,7 +153,7 @@
     </div>
 
     <div class="footer">
-        数据同步于: <span id="sync-time">2026-02-03 23:40</span> (北京时间) | 焦糖为你守护 🍮
+        数据同步于: <span id="sync-time">2026-02-03 23:45</span> (北京时间) | 焦糖为你守护 🍮
     </div>
 </body>
 </html>
