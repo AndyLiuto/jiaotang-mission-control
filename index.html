@@ -44,10 +44,9 @@
     <script>
         function refreshData() {
             console.log("Refreshing dashboard data...");
-            // Force reload avoiding cache
             location.reload(true);
         }
-        setInterval(refreshData, 300000); // Refresh every 5 mins
+        setInterval(refreshData, 300000); 
     </script>
 </head>
 <body>
@@ -58,8 +57,8 @@
         <div class="card" style="border-left: 4px solid #10b981;">
             <h2>📈 持仓分析 (Portfolio)</h2>
             <div class="task-item">
-                <span class="task-title" style="color:#10b981;">今日表现：全线红盘 🚀</span>
-                <div class="task-meta">上证指数 4067.74 (+1.29%)</div>
+                <span class="task-title" style="color:#10b981;">上证指数 4067.74 (+1.29%)</span>
+                <div class="task-meta">昨日收盘表现强劲</div>
             </div>
             <div class="task-item">
                 <span class="task-title">领涨品种</span>
@@ -80,15 +79,14 @@
         <div class="card" style="border-left: 4px solid #ef4444;">
             <h2>🔴 阿森纳中心 (Arsenal)</h2>
             <div class="task-item">
-                <span class="task-title">阿森纳 vs 切尔西</span>
-                <span class="status status-upcoming">明日 04:00</span>
-                <div class="task-meta">联赛杯半决赛 | 重点：萨卡能否进入名单？</div>
+                <span class="task-title">晋级决赛！🏆</span>
+                <span class="status status-ongoing">Win 1:0 vs Chelsea</span>
+                <div class="task-meta">总比分 4:2 | 哈弗茨 90+6' 绝杀</div>
             </div>
             <div class="task-item">
-                <span class="task-title">伤病与转会</span>
+                <span class="task-title">伤病更新</span>
                 <div class="task-meta">
-                    🤕 萨卡 (评估中) | 🦴 梅里诺 (手术预备)<br>
-                    ✈️ 津琴科 (已加盟阿贾克斯)
+                    🤕 萨卡 (缺阵 Chelsea 战) | 🦴 梅里诺 (手术预备)
                 </div>
             </div>
         </div>
@@ -97,18 +95,19 @@
         <div class="card" style="border-left: 4px solid #3b82f6;">
             <h2>🎮 DOTA 2 & 篮球 (Sports)</h2>
             <div class="task-item">
-                <span class="task-title">XG (Xtreme Gaming) 战报</span>
-                <span class="status status-waiting" style="background:#fef3c7; color:#92400e;">1胜 1负</span>
+                <span class="task-title">XG (Xtreme Gaming) 战况</span>
+                <span class="status status-ongoing" style="background:#dcfce7; color:#166534;">3胜 1负</span>
                 <div class="task-meta">
-                    1. XG 1:0 MOUZ (开门红)<br>
-                    2. XG 0:1 Team Yandex (惜败)<br>
-                    下场预告: 00:00 vs GamerLegion
+                    1. XG 1:0 MOUZ ✅<br>
+                    2. XG 0:1 Team Yandex ❌<br>
+                    3. XG 1:0 GamerLegion ✅<br>
+                    4. XG 1:0 HEROIC ✅
                 </div>
             </div>
             <div class="task-item">
-                <span class="task-title">开拓者 (杨瀚森)</span>
-                <span class="status status-waiting">明日赛程</span>
-                <div class="task-meta">重点观察内线统治力与策应数据</div>
+                <span class="task-title">今日赛程 (2月4日)</span>
+                <span class="status status-upcoming">18:00 vs Falcons</span>
+                <div class="task-meta">生死战！锁定胜者组名额</div>
             </div>
         </div>
 
@@ -116,9 +115,9 @@
         <div class="card" style="border-left: 4px solid #8b5cf6;">
             <h2>📋 正在进行的任务 (Kanban)</h2>
             <div class="task-item">
-                <span class="task-title">2026 届信安实习监控</span>
+                <span class="task-title">2026 届信安实习情报</span>
                 <span class="status status-ongoing">进行中</span>
-                <div class="task-meta">源：小红书 | 重点：字节、小红书提前批</div>
+                <div class="task-meta">GitHub Campus2026 监控中</div>
             </div>
             <div class="task-item">
                 <span class="task-title">太太工作减负方案</span>
@@ -132,29 +131,19 @@
             </div>
         </div>
 
-        <!-- 技能库 -->
-        <div class="card" style="border-left: 4px solid #d97706;">
-            <h2>🛠️ 焦糖技能概览 (Capabilities)</h2>
-            <div style="margin-top: 10px;">
-                <span class="skill-tag">Edge-TTS (晓伊音色)</span>
-                <span class="skill-tag">163 邮箱 & SMTP</span>
-                <span class=\"skill-tag\">iCloud Calendar</span>
-                <span class="skill-tag">A/U Stock Analysis</span>
-                <span class="skill-tag">Gemini Search</span>
-                <span class="skill-tag">Veo Video (Testing)</span>
-                <span class="skill-tag">XHS Monitoring</span>
-                <span class="skill-tag">Proactive COO Mode</span>
-            </div>
-            <div style="margin-top: 20px; font-size: 12px; color: #888;">
-                系统状态：巅峰运行中 🚀<br>
-                地理位置：上海 (古北/漕河泾)<br>
-                默认回复：文字优先
+        <!-- BBC 新闻 -->
+        <div class="card" style="border-left: 4px solid #000;">
+            <h2>📰 BBC World News</h2>
+            <div style="font-size: 13px; color: #444;">
+                • 爱泼斯坦案 300 万页新档案披露<br>
+                • 美军在阿拉伯海击落伊朗无人机<br>
+                • 西班牙计划禁止 16 岁以下使用社媒
             </div>
         </div>
     </div>
 
     <div class="footer">
-        数据同步于: <span id="sync-time">2026-02-03 23:45</span> (北京时间) | 焦糖为你守护 🍮
+        数据同步于: <span id="sync-time">2026-02-04 07:30</span> (北京时间) | 焦糖为你守护 🍮
     </div>
 </body>
 </html>
