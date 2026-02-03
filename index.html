@@ -40,9 +40,9 @@
     </style>
     <script>
         function refreshData() {
-            // In a real environment, this would fetch from a local server
-            // For now, we'll use static data that Jiaotang updates in the file
             console.log("Refreshing dashboard data...");
+            // Auto-refresh logic can be enhanced here
+            location.reload();
         }
         setInterval(refreshData, 300000); // Refresh every 5 mins
     </script>
@@ -90,13 +90,17 @@
             </div>
         </div>
 
-        <!-- 竞技体育 (保留 XG/杨瀚森) -->
+        <!-- 竞技体育 -->
         <div class="card">
             <h2>🎮 DOTA 2 & 篮球 (Sports)</h2>
             <div class="task-item">
-                <span class="task-title">XG vs MOUZ (BLAST S6)</span>
-                <span class="status status-upcoming">今晚 19:00</span>
-                <div class="task-meta">揭幕战 | 锁定北京时间</div>
+                <span class="task-title">XG (Xtreme Gaming) 战报</span>
+                <span class="status status-ongoing">两连胜! 🔥</span>
+                <div class=\"task-meta\">
+                    1. XG 1:0 MOUZ (开门红)<br>
+                    2. XG 1:0 Team Yandex (碾压局)<br>
+                    下场预告: 00:00 vs GamerLegion
+                </div>
             </div>
             <div class="task-item">
                 <span class="task-title">开拓者 (杨瀚森)</span>
@@ -146,7 +150,7 @@
     </div>
 
     <div class="footer">
-        数据同步于: <span id="sync-time">2026-02-03 17:15</span> (北京时间) | 焦糖为你守护 🍮
+        数据同步于: <span id="sync-time">2026-02-03 23:40</span> (北京时间) | 焦糖为你守护 🍮
     </div>
 </body>
 </html>
