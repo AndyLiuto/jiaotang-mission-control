@@ -4,6 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>焦糖 Mission Control</title>
+    <script>
+        const AUTH_CODE = "COOCaramel";
+        function checkAuth() {
+            const saved = localStorage.getItem("jiaotang_auth");
+            if (saved === AUTH_CODE) return;
+            const input = prompt("请输入焦糖授权码 (🍮):");
+            if (input === AUTH_CODE) {
+                localStorage.setItem("jiaotang_auth", AUTH_CODE);
+            } else {
+                document.body.innerHTML = "<h1 style='padding:50px;text-align:center;'>🔒 访问被拒绝。请向焦糖获取授权码。</h1>";
+                window.stop();
+            }
+        }
+        checkAuth();
+    </script>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 20px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
@@ -94,7 +109,7 @@
             <div class="task-item">
                 <span class="task-title">太太工作减负方案</span>
                 <span class="status status-waiting">待回信</span>
-                <div class="task-meta">zhiyingq@qq.com 邮件已发出</div>
+                <div class="task-meta">zhi***@qq.com 邮件已发出</div>
             </div>
             <div class="task-item">
                 <span class="task-title">陪女儿 B超复查</span>
