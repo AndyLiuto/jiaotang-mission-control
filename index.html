@@ -32,6 +32,7 @@
         .status-ongoing { background: #dcfce7; color: #166534; }
         .status-upcoming { background: #dbeafe; color: #1e40af; }
         .status-waiting { background: #fef3c7; color: #92400e; }
+        .status-alert { background: #fee2e2; color: #991b1b; }
         .task-item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f9fafb; }
         .task-title { font-weight: 600; display: block; margin-bottom: 4px; }
         .task-meta { font-size: 12px; color: #6b7280; }
@@ -43,7 +44,6 @@
     </style>
     <script>
         function refreshData() {
-            console.log("Refreshing dashboard data...");
             location.reload(true);
         }
         setInterval(refreshData, 300000); 
@@ -54,17 +54,22 @@
 
     <div class="grid">
         <!-- 股市看板 -->
-        <div class="card" style="border-left: 4px solid #10b981;">
-            <h2>📈 持仓分析 (Portfolio)</h2>
+        <div class="card" style="border-left: 4px solid #ef4444;">
+            <h2>📈 15分钟高频盯盘 (Market)</h2>
             <div class="task-item">
-                <span class="task-title" style="color:#10b981;">上证指数 4067.74 (+1.29%)</span>
-                <div class="task-meta">A股表现强劲</div>
+                <span class="task-title up">🔥 警报：隆基绿能突破 18.60！</span>
+                <div class="stock-val up">18.75 <small>+0.97%</small></div>
+                <div class="task-meta">当前触及激进买点，建议关注！</div>
             </div>
             <div class="task-item">
-                <span class="task-title">重点监控</span>
-                <div class="stock-val">18.57 <small style="font-size:14px; color:#6b7280;">隆基绿能 (601012)</small></div>
-                <div class="stock-val down">226.35 <small style="font-size:14px; color:#6b7280;">泰科电子 (TEL.US)</small></div>
-                <div class="task-meta">TEL 2月3日收报 $226.35 (-0.34%)</div>
+                <span class="task-title">领涨：中国东航 (600115)</span>
+                <div class="stock-val up">6.14 <span style="font-size:16px;">(+7.53%)</span></div>
+                <div class="task-meta">放量拉升中</div>
+            </div>
+            <div class="task-item">
+                <span class="task-title">沪深300ETF (510300)</span>
+                <div class="stock-val">4.659 <small>-0.11%</small></div>
+                <div class="task-meta">回踩蓄势中</div>
             </div>
         </div>
 
@@ -76,12 +81,6 @@
                 <span class="status status-ongoing">Win 1:0 vs Chelsea</span>
                 <div class="task-meta">总比分 4:2 | 哈弗茨 90+6' 绝杀</div>
             </div>
-            <div class="task-item">
-                <span class="task-title">伤病更新</span>
-                <div class="task-meta">
-                    🤕 萨卡 (缺阵 Chelsea 战) | 🦴 梅里诺 (手术预备)
-                </div>
-            </div>
         </div>
 
         <!-- 竞技体育 -->
@@ -91,16 +90,13 @@
                 <span class="task-title">XG (Xtreme Gaming) 战况</span>
                 <span class="status status-ongoing" style="background:#dcfce7; color:#166534;">3胜 1负</span>
                 <div class="task-meta">
-                    1. XG 1:0 MOUZ ✅<br>
-                    2. XG 0:1 Team Yandex ❌<br>
-                    3. XG 1:0 GamerLegion ✅<br>
-                    4. XG 1:0 HEROIC ✅
+                    昨晚战报已出（包含BP阵容）
                 </div>
             </div>
             <div class="task-item">
                 <span class="task-title">今日赛程 (2月4日)</span>
                 <span class="status status-upcoming">18:00 vs Falcons</span>
-                <div class="task-meta">生死战！锁定胜者组名额</div>
+                <div class="task-meta">小组赛头名之争</div>
             </div>
         </div>
 
@@ -108,37 +104,20 @@
         <div class="card" style="border-left: 4px solid #8b5cf6;">
             <h2>📋 正在进行的任务 (Kanban)</h2>
             <div class="task-item">
-                <span class="task-title">最新 AI 作品 🎞️</span>
-                <div class="task-meta">
-                    <b>黄金焦糖布丁 (Veo 3.1)</b><br>
-                    ✅ 生成成功 | <a href="https://github.com/AndyLiuto/jiaotang-mission-control/raw/master/assets/caramel_pudding_veo.mp4">点击下载视频</a>
-                </div>
+                <span class="task-title">2026 届信安实习材料</span>
+                <span class="status status-ongoing">已汇总</span>
+                <div class="task-meta">简历模版 & 内推渠道已生成</div>
             </div>
             <div class="task-item">
-                <span class="task-title">2026 届信安实习监控</span>
-                <span class="status status-ongoing">进行中</span>
-                <div class="task-meta">GitHub Campus2026 监控中</div>
-            </div>
-            <div class="task-item">
-                <span class="task-title">太太工作减负方案</span>
-                <span class="status status-waiting">待回信</span>
-                <div class="task-meta">zhi***@qq.com 邮件已发出</div>
-            </div>
-        </div>
-
-        <!-- BBC 新闻 -->
-        <div class="card" style="border-left: 4px solid #000;">
-            <h2>📰 BBC World News</h2>
-            <div style="font-size: 13px; color: #444;">
-                • 爱泼斯坦案 300 万页新档案披露<br>
-                • 美军在阿拉伯海击落伊朗无人机<br>
-                • 西班牙计划禁止 16 岁以下使用社媒
+                <span class="task-title">陪女儿 B超复查</span>
+                <span class="status status-upcoming">3月2日</span>
+                <div class="task-meta">瑞金医院 | 08:30 (已锁死时区)</div>
             </div>
         </div>
     </div>
 
     <div class="footer">
-        数据同步于: <span id="sync-time">2026-02-04 08:35</span> (北京时间) | 焦糖为你守护 🍮
+        数据同步于: <span id="sync-time">2026-02-04 10:00</span> (北京时间) | 焦糖为你守护 🍮
     </div>
 </body>
 </html>
