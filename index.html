@@ -23,27 +23,16 @@
     <style>
         * { box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #eef2f1; }
-        h1 { color: #d97706; margin-bottom: 30px; font-size: 24px; display: flex; align-items: center; flex-wrap: wrap; }
+        h1 { color: #d97706; margin-bottom: 30px; font-size: 24px; }
         h2 { font-size: 18px; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px; margin-top: 0; color: #1f2937; }
         .status { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
         .status-live { background: #fee2e2; color: #991b1b; animation: blink 1s infinite; }
         .status-upcoming { background: #dbeafe; color: #1e40af; }
-        .status-waiting { background: #fef3c7; color: #92400e; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
         .section-sub { font-size: 14px; font-weight: bold; color: #9a3412; margin: 15px 0 10px 0; }
         .footer { text-align: center; margin-top: 40px; color: #9ca3af; font-size: 12px; }
-        .holding-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        .holding-table th { text-align: left; padding: 8px 4px; border-bottom: 2px solid #e5e7eb; color: #6b7280; font-weight: 500; }
-        .holding-table td { padding: 8px 4px; border-bottom: 1px solid #f3f4f6; }
-        .profit { color: #ef4444; font-weight: bold; }
-        .loss { color: #22c55e; font-weight: bold; }
-        .total-row { background: #fef3c7; font-weight: bold; }
-        .refresh-btn { background: #d97706; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; margin-left: 10px; }
-        .refresh-btn:hover { background: #b45309; }
-        .last-update { font-size: 11px; color: #9ca3af; margin-left: 10px; }
-        .loading { opacity: 0.5; }
         .team-logo { font-size: 20px; margin-right: 8px; }
         .match-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #e5e7eb; }
         .match-opponent { font-weight: 500; }
@@ -51,196 +40,95 @@
         .task-item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f9fafb; }
         .task-title { font-weight: 600; display: block; margin-bottom: 4px; }
         .task-meta { font-size: 12px; color: #6b7280; }
-        .summary-box { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
-        .summary-total { font-size: 28px; font-weight: bold; }
-        .summary-label { font-size: 12px; color: #92400e; }
+        .summary-box { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 20px; border-radius: 12px; text-align: center; }
+        .summary-box.profit { background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%); }
+        .summary-box.loss { background: linear-gradient(135deg, #bbf7d0 0%, #86efac 100%); }
+        .summary-value { font-size: 32px; font-weight: bold; color: #1f2937; }
+        .summary-label { font-size: 12px; color: #6b7280; margin-top: 5px; }
+        .link-btn { display: inline-block; background: #d97706; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 14px; margin-top: 15px; }
+        .link-btn:hover { background: #b45309; }
     </style>
 </head>
 <body>
-    <h1>
-        🍮 焦糖 Mission Control 
-        <span style="font-size: 12px; background: #fff7ed; padding: 4px 10px; border-radius: 10px; color: #9a3412; margin-left: 10px;">COO 模式</span>
-        <button class="refresh-btn" onclick="refreshAll()">🔄 刷新行情</button>
-        <span class="last-update" id="lastUpdate">--</span>
-    </h1>
+    <h1>🍮 焦糖 Mission Control</h1>
 
     <div class="grid">
-        <!-- 持仓盈亏 -->
+        <!-- 持仓摘要 -->
         <div class="card" style="border-left: 4px solid #ef4444;">
-            <h2>💰 我的持仓 (实时)</h2>
-            <div class="summary-box">
-                <div class="summary-label">总盈亏</div>
-                <div class="summary-total" id="totalPnL">加载中...</div>
-                <div class="summary-label">总成本: <span id="totalCost">--</span> | 总市值: <span id="totalValue">--</span></div>
+            <h2>💰 持仓摘要</h2>
+            <div class="summary-box" id="summaryBox">
+                <div class="summary-value" id="totalPnL">加载中...</div>
+                <div class="summary-label">总盈亏 | 4 只持仓</div>
             </div>
-            <table class="holding-table">
-                <thead>
-                    <tr>
-                        <th>代码</th>
-                        <th>名称</th>
-                        <th>成本</th>
-                        <th>现价</th>
-                        <th>数量</th>
-                        <th>盈亏</th>
-                    </tr>
-                </thead>
-                <tbody id="holdingBody">
-                    <tr><td colspan="6" style="text-align:center;">加载中...</td></tr>
-                </tbody>
-            </table>
+            <div style="text-align: center;">
+                <a href="http://aiserver:3456" class="link-btn" target="_blank">📊 查看完整持仓</a>
+            </div>
         </div>
 
         <!-- 体育中心 -->
         <div class="card" style="border-left: 4px solid #ef4444;">
             <h2>🏆 体育中心</h2>
             
-            <div class="section-sub"><span class="team-logo">🔴</span> 阿森纳 Arsenal</div>
-            <div class="match-row">
-                <div>
-                    <span class="match-opponent">联赛杯半决赛 vs 切尔西</span>
-                    <div class="match-date">Feb 4</div>
-                </div>
-                <span class="status" style="background:#dcfce7;color:#166534;">W 1-0</span>
-            </div>
-            <div class="task-meta">🏆 挺进决赛！哈弗茨绝杀！</div>
+            <div class="section-sub"><span class="team-logo">🔴</span> 阿森纳</div>
+            <div class="task-meta">🏆 联赛杯决赛在望！哈弗茨绝杀切尔西</div>
 
-            <div class="section-sub"><span class="team-logo">🔥</span> 开拓者 Trail Blazers</div>
-            <div class="task-item" style="background: #fef3c7; padding: 8px; border-radius: 8px;">
-                <span class="task-title">⭐ 重点关注：杨汉森 Yang Hansen</span>
-                <div class="task-meta">🇨🇳 中国新秀</div>
-            </div>
+            <div class="section-sub"><span class="team-logo">🔥</span> 开拓者 (杨汉森)</div>
             <div class="match-row">
-                <div><span class="match-opponent">vs 灰熊 Memphis</span><div class="match-date">Feb 7 14:00 北京</div></div>
-                <span class="status status-upcoming">即将</span>
-            </div>
-            <div class="match-row">
-                <div><span class="match-opponent">vs 灰熊 Memphis</span><div class="match-date">Feb 8 14:00 北京</div></div>
+                <div><span class="match-opponent">vs 灰熊</span><div class="match-date">Feb 7 & 8 14:00 北京</div></div>
                 <span class="status status-upcoming">即将</span>
             </div>
 
             <div class="section-sub"><span class="team-logo">⚔️</span> XG Xtreme Gaming</div>
             <div class="match-row">
-                <div><span class="match-opponent">BLAST Slam VI 小组赛</span><div class="match-date">Feb 4-5 多场</div></div>
+                <div><span class="match-opponent">BLAST Slam VI</span><div class="match-date">Feb 4-5 小组赛</div></div>
                 <span class="status status-live">进行中</span>
+            </div>
+        </div>
+
+        <!-- 系统状态 -->
+        <div class="card" style="border-left: 4px solid #10b981;">
+            <h2>🛠️ 系统状态</h2>
+            <div class="task-item">
+                <span class="task-title">✅ 股票追踪器</span>
+                <div class="task-meta">http://aiserver:3456 运行中</div>
+            </div>
+            <div class="task-item">
+                <span class="task-title">✅ 小红书 MCP</span>
+                <div class="task-meta">已登录，可发布图文/视频</div>
+            </div>
+            <div class="task-item">
+                <span class="task-title">✅ RSSHub</span>
+                <div class="task-meta">Twitter 抓取已修复</div>
             </div>
         </div>
     </div>
 
     <div class="footer">
-        <span id="syncTime">--</span> | 焦糖为你巡航 🍮 | 行情每60秒自动刷新
+        焦糖为你巡航 🍮
     </div>
 
     <script>
-        // 持仓数据 (可编辑)
-        const portfolio = [
-            { code: "601012", name: "隆基绿能", cost: 18.773, shares: 400, market: "sh" },
-            { code: "510310", name: "300ETF", cost: 4.388, shares: 2000, market: "sh" },
-            { code: "159887", name: "银行ETF", cost: 1.263, shares: 2000, market: "sz" },
-            { code: "512890", name: "红利低波ETF", cost: 1.172, shares: 8500, market: "sh" }
-        ];
-
-        // 解析腾讯行情数据
-        function parseQuote(text, code) {
-            const regex = new RegExp(`v_[a-z]{2}${code}="([^"]+)"`);
-            const match = text.match(regex);
-            if (match) {
-                const parts = match[1].split("~");
-                return {
-                    name: parts[1],
-                    price: parseFloat(parts[3]),
-                    change: parseFloat(parts[31]),
-                    changePercent: parseFloat(parts[32])
-                };
-            }
-            return null;
-        }
-
-        // 获取实时行情
-        async function fetchQuotes() {
-            const codes = portfolio.map(p => p.market + p.code).join(",");
+        // 从股票追踪器 API 获取摘要
+        async function fetchSummary() {
             try {
-                // 使用 CORS 代理
-                const proxyUrl = "https://api.allorigins.win/raw?url=";
-                const apiUrl = `http://qt.gtimg.cn/q=${codes}`;
-                const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
-                const text = await response.text();
+                const res = await fetch('http://localhost:3456/api/holdings');
+                const data = await res.json();
+                const { summary } = data;
                 
-                const quotes = {};
-                portfolio.forEach(p => {
-                    const quote = parseQuote(text, p.code);
-                    if (quote) {
-                        quotes[p.code] = quote;
-                    }
-                });
-                return quotes;
+                const pnlSign = summary.totalPnL >= 0 ? '+' : '';
+                document.getElementById('totalPnL').textContent = 
+                    `${pnlSign}¥${summary.totalPnL.toFixed(0)} (${pnlSign}${summary.totalPnLPercent.toFixed(2)}%)`;
+                
+                const box = document.getElementById('summaryBox');
+                box.classList.remove('profit', 'loss');
+                box.classList.add(summary.totalPnL >= 0 ? 'profit' : 'loss');
             } catch (e) {
-                console.error("获取行情失败:", e);
-                return null;
+                document.getElementById('totalPnL').textContent = '无法连接';
             }
         }
-
-        // 更新持仓表格
-        function updateTable(quotes) {
-            const tbody = document.getElementById("holdingBody");
-            let html = "";
-            let totalCost = 0;
-            let totalValue = 0;
-
-            portfolio.forEach(p => {
-                const quote = quotes ? quotes[p.code] : null;
-                const price = quote ? quote.price : p.cost;
-                const costTotal = p.cost * p.shares;
-                const valueTotal = price * p.shares;
-                const pnl = valueTotal - costTotal;
-                const pnlPercent = (pnl / costTotal * 100).toFixed(2);
-
-                totalCost += costTotal;
-                totalValue += valueTotal;
-
-                const pnlClass = pnl >= 0 ? "profit" : "loss";
-                const pnlSign = pnl >= 0 ? "+" : "";
-
-                html += `<tr>
-                    <td>${p.code}</td>
-                    <td>${p.name}</td>
-                    <td>${p.cost.toFixed(3)}</td>
-                    <td>${price.toFixed(3)}</td>
-                    <td>${p.shares}</td>
-                    <td class="${pnlClass}">${pnlSign}${pnl.toFixed(1)} (${pnlSign}${pnlPercent}%)</td>
-                </tr>`;
-            });
-
-            tbody.innerHTML = html;
-
-            // 更新汇总
-            const totalPnL = totalValue - totalCost;
-            const totalPnLPercent = (totalPnL / totalCost * 100).toFixed(2);
-            const pnlClass = totalPnL >= 0 ? "profit" : "loss";
-            const pnlSign = totalPnL >= 0 ? "+" : "";
-
-            document.getElementById("totalPnL").innerHTML = `<span class="${pnlClass}">${pnlSign}${totalPnL.toFixed(1)} (${pnlSign}${totalPnLPercent}%)</span>`;
-            document.getElementById("totalCost").textContent = `¥${totalCost.toFixed(0)}`;
-            document.getElementById("totalValue").textContent = `¥${totalValue.toFixed(0)}`;
-        }
-
-        // 刷新所有数据
-        async function refreshAll() {
-            document.getElementById("holdingBody").classList.add("loading");
-            const quotes = await fetchQuotes();
-            if (quotes) {
-                updateTable(quotes);
-                const now = new Date();
-                const timeStr = now.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-                document.getElementById("lastUpdate").textContent = `最后更新: ${timeStr}`;
-                document.getElementById("syncTime").textContent = `数据同步于: ${now.toLocaleDateString("zh-CN")} ${timeStr}`;
-            }
-            document.getElementById("holdingBody").classList.remove("loading");
-        }
-
-        // 初始化
-        refreshAll();
-        // 每60秒自动刷新
-        setInterval(refreshAll, 60000);
+        
+        fetchSummary();
+        setInterval(fetchSummary, 60000);
     </script>
 </body>
 </html>
