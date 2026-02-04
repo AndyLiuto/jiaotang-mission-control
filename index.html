@@ -39,8 +39,8 @@
         .task-title { font-weight: 600; display: block; margin-bottom: 4px; }
         .task-meta { font-size: 12px; color: #6b7280; }
         .stock-val { font-size: 24px; font-weight: bold; margin: 10px 0; }
-        .up { color: #ef4444; }
-        .down { color: #22c55e; }
+        .up { color: #ef4444; } /* 红色代表上涨 */
+        .down { color: #22c55e; } /* 绿色代表下跌 */
         .skill-tag { display: inline-block; background: #e5e7eb; padding: 4px 10px; border-radius: 20px; font-size: 12px; margin: 4px; }
         .section-sub { font-size: 14px; font-weight: bold; color: #9a3412; margin: 15px 0 10px 0; display: flex; align-items: center; }
         .footer { text-align: center; margin-top: 40px; color: #9ca3af; font-size: 12px; }
@@ -57,10 +57,10 @@
 
     <div class="grid">
         <!-- 股市看板 -->
-        <div class="card" style="border-left: 4px solid #10b981;">
+        <div class="card" style="border-left: 4px solid #ef4444;">
             <h2>📈 持仓分析 (Portfolio)</h2>
             <div class="task-item">
-                <span class="task-title" style="color:#10b981;">上证指数 4067.74 (+1.29%)</span>
+                <span class="task-title" style="color:#ef4444;">上证指数 4067.74 (+1.29%)</span>
             </div>
             <div class="task-item">
                 <span class="task-title up">🆕 今日入场：隆基绿能 (601012)</span>
