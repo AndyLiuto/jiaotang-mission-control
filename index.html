@@ -34,14 +34,15 @@
         .status-upcoming { background: #dbeafe; color: #1e40af; }
         .status-waiting { background: #fef3c7; color: #92400e; }
         .status-done { background: #e5e7eb; color: #6b7280; text-decoration: line-through; }
+        .skill-tag { display: inline-block; background: #e0f2fe; color: #0284c7; padding: 4px 10px; border-radius: 20px; font-size: 12px; margin-right: 4px; border: 1px solid #bae6fd; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
         .task-item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f9fafb; }
         .task-title { font-weight: 600; display: block; margin-bottom: 4px; }
         .task-meta { font-size: 12px; color: #6b7280; }
+        .task-time { font-family: monospace; color: #9ca3af; margin-right: 5px; }
         .stock-val { font-size: 24px; font-weight: bold; margin: 10px 0; }
         .up { color: #ef4444; }
         .down { color: #22c55e; }
-        .skill-tag { display: inline-block; background: #e5e7eb; padding: 4px 10px; border-radius: 20px; font-size: 12px; margin: 4px; }
         .section-sub { font-size: 14px; font-weight: bold; color: #9a3412; margin: 15px 0 10px 0; display: flex; align-items: center; }
         .footer { text-align: center; margin-top: 40px; color: #9ca3af; font-size: 12px; }
     </style>
@@ -58,21 +59,53 @@
     <div class="grid">
         <!-- 股市看板 -->
         <div class="card" style="border-left: 4px solid #ef4444;">
-            <h2>📈 午间收盘战报 (Market Close)</h2>
+            <h2>📈 A股午后战报 (13:16)</h2>
             <div class="task-item">
                 <span class="task-title up">🚀 隆基绿能 (601012)</span>
-                <div class="stock-val up">18.77 <small>+1.08%</small></div>
-                <div class="task-meta">早盘最高 18.99，回踩确认 18.60 支撑有效</div>
+                <div class="stock-val up">18.99 <small>+2.26%</small></div>
+                <div class="task-meta">🔥 突破 18.60 监控位 | 量能放大</div>
             </div>
             <div class="task-item">
                 <span class="task-title up">🎉 中国东航 (600115)</span>
                 <div class="stock-val up">6.28 <span style="font-size:16px;">(+9.98%)</span></div>
-                <div class="task-meta">涨停封死，午间封单量稳健</div>
+                <div class="task-meta">涨停封死 | 航空板块领涨</div>
             </div>
             <div class="task-item">
                 <span class="task-title down">沪深300ETF (510300)</span>
-                <div class="stock-val down">4.657 <small>-0.15%</small></div>
-                <div class="task-meta">指数微调，大盘处于横盘磨底期</div>
+                <div class="stock-val down">4.655 <small>-0.19%</small></div>
+                <div class="task-meta">午后微跌震荡</div>
+            </div>
+        </div>
+
+        <!-- 系统与技能日志 -->
+        <div class="card" style="border-left: 4px solid #10b981;">
+            <h2>🛠️ 技能与系统 (System Log)</h2>
+            <div class="section-sub">🆕 今日新增技能</div>
+            <div class="task-item">
+                <span class="skill-tag">xiaohongshu-mcp</span>
+                <span class="skill-tag">wecom</span>
+                <div class="task-meta">已安装并完成登录配置，支持图文/视频发布</div>
+            </div>
+            <div class="task-item">
+                <span class="skill-tag">RSSHub (Fixed)</span>
+                <div class="task-meta">修复 Twitter 抓取 (Auth Token)，恢复高清图抓取能力</div>
+            </div>
+
+            <div class="section-sub">✅ 今日完成任务 (Timeline)</div>
+            <div class="task-item">
+                <span class="task-time">13:16</span>
+                <span class="task-title">RSSHub 修复验证</span>
+                <div class="task-meta">成功抓取 @now_arsenal 推文流</div>
+            </div>
+            <div class="task-item">
+                <span class="task-time">13:07</span>
+                <span class="task-title">发布小红书图文</span>
+                <div class="task-meta">"King Kai！专治切尔西" (哈弗茨庆祝图)</div>
+            </div>
+            <div class="task-item">
+                <span class="task-time">12:48</span>
+                <span class="task-title">发布小红书视频</span>
+                <div class="task-meta">"这脚法太丝滑了" (Twitter 视频搬运)</div>
             </div>
         </div>
 
@@ -82,23 +115,19 @@
             
             <div class="section-sub">⏳ 正在进行 (Ongoing)</div>
             <div class="task-item">
-                <span class="task-title">2026 届信安实习内推监控</span>
-                <div class="task-meta">监控 GitHub/小红书/V2EX</div>
+                <span class="task-title">企业微信 (WeCom) 接入</span>
+                <span class="status status-waiting">待配置</span>
+                <div class="task-meta">等待 Webhook Key 填入</div>
             </div>
             <div class="task-item">
-                <span class="task-title">太太工作减负方案研究</span>
-                <span class="status status-waiting">待回信</span>
-                <div class="task-meta">zhi***@qq.com 邮件已送达</div>
+                <span class="task-title">2026 届信安实习内推监控</span>
+                <div class="task-meta">监控 GitHub/小红书/V2EX</div>
             </div>
 
             <div class="section-sub" style="color: #6b7280;">✅ 已完成 (Completed)</div>
             <div class="task-item" style="opacity: 0.7;">
                 <span class="task-title" style="text-decoration: line-through;">设置日历：陪女儿 B超复查</span>
                 <div class="task-meta">3月2日 08:30 已录入日历</div>
-            </div>
-            <div class="task-item" style="opacity: 0.7;">
-                <span class="task-title" style="text-decoration: line-through;">《鬼灭之刃》深度研报</span>
-                <div class="task-meta">已生成并挂载至看板</div>
             </div>
         </div>
 
@@ -114,24 +143,10 @@
                 <div class="task-meta">萨卡目标 2.22 德比复出</div>
             </div>
         </div>
-
-        <!-- 竞技体育 -->
-        <div class="card" style="border-left: 4px solid #3b82f6;">
-            <h2>🎮 XG 全天赛程 (北京时间)</h2>
-            <div class="task-item">
-                <span class="task-title">XG vs Team Falcons</span>
-                <span class="status status-upcoming">今晚 17:00</span>
-                <div class="task-meta">小组赛头名关键战</div>
-            </div>
-            <div class="task-item">
-                <span class="task-title">XG vs OG</span>
-                <span class="status status-upcoming">今晚 19:00</span>
-            </div>
-        </div>
     </div>
 
     <div class="footer">
-        数据同步于: <span id="sync-time">2026-02-04 11:30 (Morning Close)</span> | 焦糖为你午间巡航 🍮
+        数据同步于: <span id="sync-time">2026-02-04 13:17 (Afternoon Session)</span> | 焦糖为你巡航 🍮
     </div>
 </body>
 </html>
