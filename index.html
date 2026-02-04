@@ -39,8 +39,8 @@
         .task-title { font-weight: 600; display: block; margin-bottom: 4px; }
         .task-meta { font-size: 12px; color: #6b7280; }
         .stock-val { font-size: 24px; font-weight: bold; margin: 10px 0; }
-        .up { color: #ef4444; } /* 红色代表上涨 */
-        .down { color: #22c55e; } /* 绿色代表下跌 */
+        .up { color: #ef4444; }
+        .down { color: #22c55e; }
         .skill-tag { display: inline-block; background: #e5e7eb; padding: 4px 10px; border-radius: 20px; font-size: 12px; margin: 4px; }
         .section-sub { font-size: 14px; font-weight: bold; color: #9a3412; margin: 15px 0 10px 0; display: flex; align-items: center; }
         .footer { text-align: center; margin-top: 40px; color: #9ca3af; font-size: 12px; }
@@ -58,17 +58,21 @@
     <div class="grid">
         <!-- 股市看板 -->
         <div class="card" style="border-left: 4px solid #ef4444;">
-            <h2>📈 持仓分析 (Portfolio)</h2>
+            <h2>📈 15分钟高频盯盘 (Market)</h2>
             <div class="task-item">
-                <span class="task-title" style="color:#ef4444;">上证指数 4067.74 (+1.29%)</span>
+                <span class="task-title up">🚀 隆基稳守突破位！</span>
+                <div class="stock-val up">18.87 <small>+1.62%</small></div>
+                <div class="task-meta">成功站稳 18.60，最高 18.99</div>
             </div>
             <div class="task-item">
-                <span class="task-title up">🆕 今日入场：隆基绿能 (601012)</span>
-                <div class="stock-val">18.76 <small style="font-size:14px; color:#6b7280;">成本价 | 现价 18.96 🚀</small></div>
+                <span class="task-title up">🎉 中国东航封涨停！</span>
+                <div class="stock-val up">6.28 <span style="font-size:16px;">(+9.98%)</span></div>
+                <div class="task-meta">买入时点极佳，持股待涨</div>
             </div>
             <div class="task-item">
-                <span class="task-title">领涨：中国东航 (600115)</span>
-                <div class="stock-val up">6.28 <span style="font-size:16px;">(+9.98% 封板)</span></div>
+                <span class="task-title down">沪深300ETF (510300)</span>
+                <div class="stock-val down">4.658 <small>-0.13%</small></div>
+                <div class="task-meta">指数盘整，轻指数重个股</div>
             </div>
         </div>
 
@@ -79,7 +83,7 @@
             <div class="section-sub">⏳ 正在进行 (Ongoing)</div>
             <div class="task-item">
                 <span class="task-title">2026 届信安实习材料监控</span>
-                <div class="task-meta">重点：字节/小红书内推码汇总</div>
+                <div class="task-meta">监控 GitHub/小红书内推码汇总</div>
             </div>
             <div class="task-item">
                 <span class="task-title">太太工作减负方案</span>
@@ -88,7 +92,7 @@
             </div>
 
             <div class="section-sub" style="color: #6b7280;">✅ 已完成 (Completed)</div>
-            <div class="task-item" style="opacity: 0.7;">
+             <div class="task-item" style="opacity: 0.7;">
                 <span class="task-title" style="text-decoration: line-through;">设置日历：陪女儿 B超复查</span>
                 <div class="task-meta">✅ 3月2日 08:30 已录入主日历</div>
             </div>
@@ -145,7 +149,7 @@
     </div>
 
     <div class="footer">
-        数据同步于: <span id="sync-time">2026-02-04 10:55 (Build: 1352)</span> | 焦糖为你守护 🍮
+        数据同步于: <span id="sync-time">2026-02-04 11:00 (Build: 1354)</span> | 焦糖为你守护 🍮
     </div>
 </body>
 </html>
