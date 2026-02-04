@@ -45,6 +45,14 @@
         .down { color: #22c55e; }
         .section-sub { font-size: 14px; font-weight: bold; color: #9a3412; margin: 15px 0 10px 0; display: flex; align-items: center; }
         .footer { text-align: center; margin-top: 40px; color: #9ca3af; font-size: 12px; }
+        .team-logo { font-size: 20px; margin-right: 8px; }
+        .match-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #e5e7eb; }
+        .match-opponent { font-weight: 500; }
+        .match-date { font-size: 12px; color: #6b7280; }
+        .match-result { font-weight: bold; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+        .win { background: #dcfce7; color: #166534; }
+        .loss { background: #fee2e2; color: #991b1b; }
+        .draw { background: #fef3c7; color: #92400e; }
     </style>
     <script>
         function refreshData() {
@@ -59,7 +67,7 @@
     <div class="grid">
         <!-- 股市看板 -->
         <div class="card" style="border-left: 4px solid #ef4444;">
-            <h2>📈 A股午后战报 (13:16)</h2>
+            <h2>📈 A股午后战报 (13:26)</h2>
             <div class="task-item">
                 <span class="task-title up">🚀 隆基绿能 (601012)</span>
                 <div class="stock-val up">18.99 <small>+2.26%</small></div>
@@ -75,6 +83,77 @@
                 <div class="stock-val down">4.655 <small>-0.19%</small></div>
                 <div class="task-meta">午后微跌震荡</div>
             </div>
+            <div class="section-sub">💡 买入机会分析</div>
+            <div class="task-item">
+                <span class="skill-tag">光伏ETF 515790</span> <span class="status status-ongoing">+1.87%</span>
+                <div class="task-meta">今日最强主线，跟随隆基突破</div>
+            </div>
+            <div class="task-item">
+                <span class="skill-tag">银行ETF 512800</span> <span class="status status-ongoing">+1.04%</span>
+                <div class="task-meta">避险首选，底仓配置</div>
+            </div>
+            <div class="task-item">
+                <span class="skill-tag">半导体ETF 512480</span> <span class="status status-waiting">-2.92%</span>
+                <div class="task-meta">左侧机会，分批低吸</div>
+            </div>
+        </div>
+
+        <!-- 体育中心 -->
+        <div class="card" style="border-left: 4px solid #ef4444;">
+            <h2>🏆 体育中心 (Sports Hub)</h2>
+            
+            <!-- 阿森纳 -->
+            <div class="section-sub"><span class="team-logo">🔴</span> 阿森纳 Arsenal</div>
+            <div class="match-row">
+                <div>
+                    <span class="match-opponent">联赛杯半决赛 vs 切尔西</span>
+                    <div class="match-date">Feb 4 (昨天)</div>
+                </div>
+                <span class="match-result win">W 1-0</span>
+            </div>
+            <div class="task-meta" style="margin: 8px 0;">🏆 挺进决赛！哈弗茨绝杀！萨利巴 9.0 分</div>
+            <div class="match-row">
+                <div>
+                    <span class="match-opponent">🩹 萨卡伤情</span>
+                    <div class="match-date">目标 2.22 北伦敦德比复出</div>
+                </div>
+                <span class="status status-waiting">恢复中</span>
+            </div>
+
+            <!-- 开拓者 -->
+            <div class="section-sub"><span class="team-logo">🔥</span> 开拓者 Trail Blazers <small style="color:#6b7280;">(23-27)</small></div>
+            <div class="match-row">
+                <div>
+                    <span class="match-opponent">vs 太阳 Phoenix Suns</span>
+                    <div class="match-date">Feb 3 (今天)</div>
+                </div>
+                <span class="status status-live">🔴 LIVE</span>
+            </div>
+            <div class="match-row">
+                <div>
+                    <span class="match-opponent">vs 灰熊 Memphis</span>
+                    <div class="match-date">Feb 6 (Fri) 10:00 PM</div>
+                </div>
+                <span class="status status-upcoming">即将</span>
+            </div>
+            <div class="match-row">
+                <div>
+                    <span class="match-opponent">vs 灰熊 Memphis</span>
+                    <div class="match-date">Feb 7 (Sat) 10:00 PM</div>
+                </div>
+                <span class="status status-upcoming">即将</span>
+            </div>
+
+            <!-- XG -->
+            <div class="section-sub"><span class="team-logo">⚔️</span> XG Xtreme Gaming <small style="color:#6b7280;">(Dota 2)</small></div>
+            <div class="match-row">
+                <div>
+                    <span class="match-opponent">DreamLeague S25</span>
+                    <div class="match-date">赛程待更新</div>
+                </div>
+                <span class="status status-waiting">查询中</span>
+            </div>
+            <div class="task-meta">⏳ Liquipedia 被反爬虫阻止，稍后用浏览器抓取</div>
         </div>
 
         <!-- 系统与技能日志 -->
@@ -92,6 +171,16 @@
             </div>
 
             <div class="section-sub">✅ 今日完成任务 (Timeline)</div>
+            <div class="task-item">
+                <span class="task-time">13:26</span>
+                <span class="task-title">A股买入机会分析</span>
+                <div class="task-meta">推荐光伏/银行ETF，规避半导体短期弱势</div>
+            </div>
+            <div class="task-item">
+                <span class="task-time">13:20</span>
+                <span class="task-title">发布小红书图文 #3</span>
+                <div class="task-meta">"哈弗茨绝杀！这剧本太完美了🔥"</div>
+            </div>
             <div class="task-item">
                 <span class="task-time">13:16</span>
                 <span class="task-title">RSSHub 修复验证</span>
@@ -123,30 +212,26 @@
                 <span class="task-title">2026 届信安实习内推监控</span>
                 <div class="task-meta">监控 GitHub/小红书/V2EX</div>
             </div>
+            <div class="task-item">
+                <span class="task-title">XG 赛程抓取</span>
+                <span class="status status-waiting">待处理</span>
+                <div class="task-meta">需要浏览器绕过 Liquipedia 反爬</div>
+            </div>
 
             <div class="section-sub" style="color: #6b7280;">✅ 已完成 (Completed)</div>
             <div class="task-item" style="opacity: 0.7;">
                 <span class="task-title" style="text-decoration: line-through;">设置日历：陪女儿 B超复查</span>
                 <div class="task-meta">3月2日 08:30 已录入日历</div>
             </div>
-        </div>
-
-        <!-- 阿森纳专栏 -->
-        <div class="card" style="border-left: 4px solid #ef4444;">
-            <h2>🔴 阿森纳中心 (Arsenal)</h2>
-            <div class="task-item">
-                <span class="task-title">挺进决赛！🏆</span>
-                <div class="task-meta">哈弗茨绝杀切尔西 | 萨利巴 9.0 分全场最佳</div>
-            </div>
-            <div class="task-item">
-                <span class="task-title">🩹 伤情速报</span>
-                <div class="task-meta">萨卡目标 2.22 德比复出</div>
+            <div class="task-item" style="opacity: 0.7;">
+                <span class="task-title" style="text-decoration: line-through;">看板 Git 同步修复</span>
+                <div class="task-meta">已创建 sync_dashboard.sh 脚本</div>
             </div>
         </div>
     </div>
 
     <div class="footer">
-        数据同步于: <span id="sync-time">2026-02-04 13:17 (Afternoon Session)</span> | 焦糖为你巡航 🍮
+        数据同步于: <span id="sync-time">2026-02-04 13:28 (Afternoon Session)</span> | 焦糖为你巡航 🍮
     </div>
 </body>
 </html>
