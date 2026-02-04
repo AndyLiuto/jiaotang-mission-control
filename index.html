@@ -34,7 +34,7 @@
         .status-upcoming { background: #dbeafe; color: #1e40af; }
         .status-waiting { background: #fef3c7; color: #92400e; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        .task-item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1 solid #f9fafb; }
+        .task-item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f9fafb; }
         .task-title { font-weight: 600; display: block; margin-bottom: 4px; }
         .task-meta { font-size: 12px; color: #6b7280; }
         .stock-val { font-size: 24px; font-weight: bold; margin: 10px 0; }
@@ -45,6 +45,7 @@
     </style>
     <script>
         function refreshData() {
+            console.log("Refreshing dashboard data...");
             location.reload(true);
         }
         setInterval(refreshData, 300000); 
@@ -54,43 +55,42 @@
     <h1>🍮 焦糖 Mission Control <span style="margin-left: 10px; font-size: 12px; background: #fff7ed; padding: 4px 10px; border-radius: 10px; color: #9a3412;">COO 模式已激活</span></h1>
 
     <div class="grid">
-        <!-- 竞技体育 -->
-        <div class="card" style="border-left: 4px solid #3b82f6;">
-            <h2>🎮 XG 今日全天赛程 (Sports)</h2>
-            <div class="task-item">
-                <span class="task-title">XG vs Team Falcons</span>
-                <span class="status status-live">正在进行 (LIVE)</span>
-                <div class="task-meta">2月4日 10:00 | 小组头名关键战</div>
-            </div>
-            <div class="task-item">
-                <span class="task-title">XG vs OG</span>
-                <span class="status status-upcoming">约 13:00</span>
-                <div class="task-meta">2月4日 | 状态：待命</div>
-            </div>
-            <div class="task-item">
-                <span class="task-title">XG vs Team Spirit</span>
-                <span class="status status-upcoming">约 16:00</span>
-                <div class="task-meta">2月4日 | 状态：待命</div>
-            </div>
-            <div class="task-item">
-                <span class="task-title">XG vs Team Liquid</span>
-                <span class="status status-upcoming">约 18:00</span>
-                <div class="task-meta">2月4日 | 状态：待命</div>
-            </div>
-        </div>
-
         <!-- 股市看板 -->
         <div class="card" style="border-left: 4px solid #10b981;">
-            <h2>📈 核心盯盘 (Finance)</h2>
+            <h2>📈 A股持仓分析 (Portfolio)</h2>
             <div class="task-item">
-                <span class="task-title">隆基绿能 (601012)</span>
-                <div class="stock-val up">18.69 <small>监控中</small></div>
-                <div class="task-meta">稳在 18.60 突破位上方</div>
+                <span class="task-title" style="color:#10b981;">上证指数 4067.74 (+1.29%)</span>
+            </div>
+            <div class="task-item">
+                <span class="task-title up">🆕 新入场：隆基绿能 (601012)</span>
+                <div class="stock-val">18.76 <small style="font-size:14px; color:#6b7280;">成本价 | 400股</small></div>
+                <div class="task-meta">2月4日早盘 突破买入</div>
+            </div>
+            <div class="task-item">
+                <span class="task-title">领涨：中国东航 (600115)</span>
+                <div class="stock-val up">6.18 <span style="font-size:16px;">(+8.23%)</span></div>
             </div>
             <div class="task-item">
                 <span class="task-title">泰科电子 (TEL.US)</span>
                 <div class="stock-val">226.35 <small>-0.34%</small></div>
-                <div class="task-meta">2月3日收盘价 | 表现稳健</div>
+            </div>
+        </div>
+
+        <!-- 竞技体育 -->
+        <div class="card" style="border-left: 4px solid #3b82f6;">
+            <h2>🎮 XG 全天赛程 (北京时间)</h2>
+            <div class="task-item">
+                <span class="task-title">XG vs Team Falcons</span>
+                <span class="status status-upcoming">今晚 17:00</span>
+                <div class="task-meta">小组赛生死战</div>
+            </div>
+            <div class="task-item">
+                <span class="task-title">XG vs OG</span>
+                <span class="status status-upcoming">今晚 19:00</span>
+            </div>
+            <div class="task-item">
+                <span class="task-title">XG 战报回放</span>
+                <div class="task-meta">昨日 3胜 1负 | 包含翻盘局解说</div>
             </div>
         </div>
 
@@ -100,22 +100,24 @@
             <div class="task-item">
                 <span class="task-title">晋级决赛！🏆</span>
                 <span class="status status-ongoing">Win 1:0 vs Chelsea</span>
-                <div class="task-meta">哈弗茨 96' 绝杀 | 下场 2.7 战桑德兰</div>
+                <div class="task-meta">哈弗茨 96' 绝杀 | 总比分 4:2</div>
             </div>
         </div>
 
         <!-- 任务看板 -->
         <div class="card" style="border-left: 4px solid #8b5cf6;">
-            <h2>📋 家庭与实习 (Kanban)</h2>
+            <h2>📋 正在进行的任务 (Kanban)</h2>
             <div class="task-item">
-                <span class="task-title">2026 届信安实习情报</span>
-                <span class="status status-ongoing">监控中</span>
-                <div class="task-meta">重点：字节、小红书提前批</div>
+                <span class="task-title">最新 AI 作品 🎞️</span>
+                <div class="task-meta">
+                    <b>黄金焦糖布丁 (Veo 3.1)</b><br>
+                    ✅ 已生成 | <a href="https://github.com/AndyLiuto/jiaotang-mission-control/raw/master/assets/caramel_pudding_veo.mp4">点击预览</a>
+                </div>
             </div>
             <div class="task-item">
                 <span class="task-title">陪女儿 B超复查</span>
-                <span class="status status-upcoming">3月2日</span>
-                <div class="task-meta">瑞金医院 | 已锁定北京时间</div>
+                <span class="status status-upcoming">3月2日 08:30</span>
+                <div class="task-meta">瑞金医院 | 日历已对齐时区</div>
             </div>
         </div>
 
@@ -124,14 +126,14 @@
             <h2>📰 BBC World News</h2>
             <div style="font-size: 13px; color: #444;">
                 • 爱泼斯坦案 300 万页新档案披露<br>
-                • 美军在阿拉伯海击落伊朗无人机<br>
-                • 西班牙计划禁止 16 岁以下使用社媒
+                • 美军击落伊朗无人机<br>
+                • 西班牙拟禁 16 岁以下使用社媒
             </div>
         </div>
     </div>
 
     <div class="footer">
-        数据同步于: <span id="sync-time">2026-02-04 10:25</span> (北京时间) | 焦糖为你守护 🍮
+        数据同步于: <span id="sync-time">2026-02-04 10:30</span> (北京时间) | 焦糖为你守护 🍮
     </div>
 </body>
 </html>
