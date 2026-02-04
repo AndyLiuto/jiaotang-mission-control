@@ -30,10 +30,11 @@
         h2 { font-size: 18px; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px; margin-top: 0; color: #1f2937; }
         .status { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
         .status-ongoing { background: #dcfce7; color: #166534; }
+        .status-live { background: #fee2e2; color: #991b1b; animation: blink 1s infinite; }
         .status-upcoming { background: #dbeafe; color: #1e40af; }
         .status-waiting { background: #fef3c7; color: #92400e; }
-        .status-alert { background: #fee2e2; color: #991b1b; }
-        .task-item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f9fafb; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .task-item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1 solid #f9fafb; }
         .task-title { font-weight: 600; display: block; margin-bottom: 4px; }
         .task-meta { font-size: 12px; color: #6b7280; }
         .stock-val { font-size: 24px; font-weight: bold; margin: 10px 0; }
@@ -53,23 +54,43 @@
     <h1>🍮 焦糖 Mission Control <span style="margin-left: 10px; font-size: 12px; background: #fff7ed; padding: 4px 10px; border-radius: 10px; color: #9a3412;">COO 模式已激活</span></h1>
 
     <div class="grid">
+        <!-- 竞技体育 -->
+        <div class="card" style="border-left: 4px solid #3b82f6;">
+            <h2>🎮 XG 今日全天赛程 (Sports)</h2>
+            <div class="task-item">
+                <span class="task-title">XG vs Team Falcons</span>
+                <span class="status status-live">正在进行 (LIVE)</span>
+                <div class="task-meta">2月4日 10:00 | 小组头名关键战</div>
+            </div>
+            <div class="task-item">
+                <span class="task-title">XG vs OG</span>
+                <span class="status status-upcoming">约 13:00</span>
+                <div class="task-meta">2月4日 | 状态：待命</div>
+            </div>
+            <div class="task-item">
+                <span class="task-title">XG vs Team Spirit</span>
+                <span class="status status-upcoming">约 16:00</span>
+                <div class="task-meta">2月4日 | 状态：待命</div>
+            </div>
+            <div class="task-item">
+                <span class="task-title">XG vs Team Liquid</span>
+                <span class="status status-upcoming">约 18:00</span>
+                <div class="task-meta">2月4日 | 状态：待命</div>
+            </div>
+        </div>
+
         <!-- 股市看板 -->
-        <div class="card" style="border-left: 4px solid #ef4444;">
-            <h2>📈 15分钟高频盯盘 (Market)</h2>
+        <div class="card" style="border-left: 4px solid #10b981;">
+            <h2>📈 核心盯盘 (Finance)</h2>
             <div class="task-item">
-                <span class="task-title up">🔥 隆基绿能突破 18.60！</span>
-                <div class="stock-val up">18.69 <small>+0.65%</small></div>
-                <div class="task-meta">当前在 18.60 支撑位上方震荡</div>
+                <span class="task-title">隆基绿能 (601012)</span>
+                <div class="stock-val up">18.69 <small>监控中</small></div>
+                <div class="task-meta">稳在 18.60 突破位上方</div>
             </div>
             <div class="task-item">
-                <span class="task-title">强势：中国东航 (600115)</span>
-                <div class="stock-val up">6.19 <span style="font-size:16px;">(+8.41%)</span></div>
-                <div class="task-meta">多头情绪持续爆发</div>
-            </div>
-            <div class="task-item">
-                <span class="task-title">沪深300ETF (510300)</span>
-                <div class="stock-val">4.663 <small>-0.02%</small></div>
-                <div class="task-meta">指数接近平盘，个股行情为主</div>
+                <span class="task-title">泰科电子 (TEL.US)</span>
+                <div class="stock-val">226.35 <small>-0.34%</small></div>
+                <div class="task-meta">2月3日收盘价 | 表现稳健</div>
             </div>
         </div>
 
@@ -79,41 +100,22 @@
             <div class="task-item">
                 <span class="task-title">晋级决赛！🏆</span>
                 <span class="status status-ongoing">Win 1:0 vs Chelsea</span>
-                <div class="task-meta">总比分 4:2 | 哈弗茨 90+6' 绝杀</div>
-            </div>
-        </div>
-
-        <!-- 竞技体育 -->
-        <div class="card" style="border-left: 4px solid #3b82f6;">
-            <h2>🎮 DOTA 2 & 篮球 (Sports)</h2>
-            <div class="task-item">
-                <span class="task-title">XG (Xtreme Gaming) 战况</span>
-                <span class="status status-ongoing" style="background:#dcfce7; color:#166534;">3胜 1负</span>
-                <div class="task-meta">
-                    昨日战报已更新（包含 BP 阵容）
-                </div>
-            </div>
-            <div class="task-item">
-                <span class="task-title">今日赛程 (2月4日)</span>
-                <span class="status status-upcoming">18:00 vs Falcons</span>
-                <div class="task-meta">小组赛生死战</div>
+                <div class="task-meta">哈弗茨 96' 绝杀 | 下场 2.7 战桑德兰</div>
             </div>
         </div>
 
         <!-- 任务看板 -->
         <div class="card" style="border-left: 4px solid #8b5cf6;">
-            <h2>📋 正在进行的任务 (Kanban)</h2>
+            <h2>📋 家庭与实习 (Kanban)</h2>
             <div class="task-item">
-                <span class="task-title">最新 AI 作品 🎞️</span>
-                <div class="task-meta">
-                    <b>黄金焦糖布丁 (Veo 3.1)</b><br>
-                    ✅ 生成成功 | <a href="https://github.com/AndyLiuto/jiaotang-mission-control/raw/master/assets/caramel_pudding_veo.mp4">点击下载视频</a>
-                </div>
+                <span class="task-title">2026 届信安实习情报</span>
+                <span class="status status-ongoing">监控中</span>
+                <div class="task-meta">重点：字节、小红书提前批</div>
             </div>
             <div class="task-item">
-                <span class="task-title">2026 届信安实习材料</span>
-                <span class="status status-ongoing">已汇总</span>
-                <div class="task-meta">简历模版 & 内推渠道已就绪</div>
+                <span class="task-title">陪女儿 B超复查</span>
+                <span class="status status-upcoming">3月2日</span>
+                <div class="task-meta">瑞金医院 | 已锁定北京时间</div>
             </div>
         </div>
 
@@ -129,7 +131,7 @@
     </div>
 
     <div class="footer">
-        数据同步于: <span id="sync-time">2026-02-04 10:15:14</span> (北京时间) | 焦糖为你守护 🍮
+        数据同步于: <span id="sync-time">2026-02-04 10:25</span> (北京时间) | 焦糖为你守护 🍮
     </div>
 </body>
 </html>
