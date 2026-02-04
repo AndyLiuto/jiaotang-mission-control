@@ -116,8 +116,14 @@
                 const { summary } = data;
                 
                 const pnlSign = summary.totalPnL >= 0 ? '+' : '';
-                document.getElementById('totalPnL').textContent = 
-                    `${pnlSign}¥${summary.totalPnL.toFixed(0)} (${pnlSign}${summary.totalPnLPercent.toFixed(2)}%)`;
+                const todaySign = summary.totalPnLToday >= 0 ? '+' : '';
+                
+                document.getElementById('totalPnL').innerHTML = `
+                    <div style="font-size: 24px;">累计 ${pnlSign}¥${summary.totalPnL.toFixed(0)}</div>
+                    <div style="font-size: 18px; margin-top: 5px; color: ${summary.totalPnLToday >= 0 ? '#ef4444' : '#22c55e'}">
+                        今日 ${todaySign}¥${summary.totalPnLToday.toFixed(0)}
+                    </div>
+                `;
                 
                 const box = document.getElementById('summaryBox');
                 box.classList.remove('profit', 'loss');
