@@ -34,8 +34,6 @@
         .up { color: #ef4444; }
         .down { color: #22c55e; }
         .footer { text-align: center; margin-top: 40px; color: #9ca3af; font-size: 11px; letter-spacing: 1px; }
-        .link-btn { display: inline-block; background: #d97706; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; margin-top: 15px; }
-        .link-btn:hover { background: #b45309; }
     </style>
 </head>
 <body>
@@ -73,7 +71,7 @@
                     <div class="stock-pct up">+0.52%</div>
                 </div>
             </div>
-            <div class="stock-row">
+            <div class="stock-row border-none">
                 <div class="stock-name">TE Connectivity (TEL.US)</div>
                 <div class="stock-price text-right">
                     <div style="color: #1f2937;">241.44</div>
@@ -81,7 +79,7 @@
                 </div>
             </div>
             <div class="task-meta mt-4 flex justify-between items-center">
-                <span>🕒 更新: 2026-02-25 14:35</span>
+                <span>🕒 更新: 2026-02-25 14:30</span>
                 <span class="text-blue-500 font-bold">交易中</span>
             </div>
             <div class="p-3 bg-blue-50 rounded-lg mt-4 text-[11px]">
@@ -97,7 +95,7 @@
         <div class="card" style="border-top: 4px solid #ef4444;">
             <h2><i class="fa-solid fa-trophy"></i> 体育战略中心</h2>
             
-            <div class="section-sub"><span>🔴 阿森纳 (Arsenal)</span> <a href="https://andyliuto.github.io/jiaotang-mission-control/spectre_guide.html" class="text-[10px] text-red-500 uppercase hover:underline">近期赛果 &gt;</a></div>
+            <div class="section-sub"><span>🔴 阿森纳 (Arsenal)</span> <a href="drow_ranger_guide.html" class="text-[10px] text-red-500 uppercase hover:underline">攻略库 &gt;</a></div>
             <div class="match-row">
                 <div class="match-info">
                     <span class="match-opponent">vs 热刺 (Tottenham)</span>
@@ -114,33 +112,25 @@
                 </div>
                 <span class="status status-upcoming">下一场</span>
             </div>
-            <div class="task-meta text-[10px] text-gray-400">赛程核实：3/1 主场 vs 切尔西（北京时间周日深夜）。</div>
 
             <div class="section-sub"><span>⚔️ XG Xtreme Gaming</span> <a href="dota2.html" class="text-[10px] text-purple-500 uppercase hover:underline">DOTA 看板 &gt;</a></div>
             <div class="match-row">
                 <div class="match-info">
-                    <span class="match-opponent">vs PARIVISION</span>
-                    <span class="match-date">2026-02-24 | 2-0 完胜 (DL S28)</span>
+                    <span class="match-opponent">vs Tundra Esports</span>
+                    <span class="match-date">2026-02-25 | 0-2 落败 (DL S28)</span>
                 </div>
                 <div class="text-right">
                     <span class="status status-done ml-2">完赛</span>
                 </div>
             </div>
-            <div class="match-row">
-                <div class="match-info">
-                    <span class="match-opponent">vs BetBoom Team</span>
-                    <span class="match-date">Feb 25 (今晚) 18:30 北京 | DL S28</span>
-                </div>
-                <span class="status status-live">准备开战</span>
-            </div>
             <div class="match-row border-none pb-0">
                 <div class="match-info">
-                    <span class="match-opponent">vs Team Falcons</span>
-                    <span class="match-date">Feb 26 (明天) 21:30 北京 | DL S28</span>
+                    <span class="match-opponent">vs BetBoom Team</span>
+                    <span class="match-date">Feb 26 (明天) 03:30 北京 | DL S28</span>
                 </div>
-                <span class="status status-upcoming">紧接下场</span>
+                <span class="status status-upcoming">接下一场</span>
             </div>
-            <div class="task-meta text-[10px] text-gray-400">魔鬼二段：2/27 18:30 vs Tundra | 2/28 21:30 vs Aurora</div>
+            <div class="task-meta text-[10px] text-gray-500">小组赛第二阶段 XG 状态告急，需在接下来的 BB 和 Falcons 战中取分。</div>
 
             <div class="section-sub"><span>🔥 开拓者 (杨汉森)</span></div>
             <div class="match-row">
@@ -161,24 +151,27 @@
             </div>
         </div>
 
-        <!-- 快速实验室 -->
+        <!-- 系统入口 -->
         <div class="card" style="border-top: 4px solid #10b981;">
-            <h2><i class="fa-solid fa-bolt"></i> 快速实验室</h2>
+            <h2><i class="fa-solid fa-bolt"></i> 快速入口</h2>
             <div class="flex flex-col gap-3 mt-4">
                 <a href="dota2.html" class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
-                    <span class="font-medium text-gray-700">Dota 2 上分看板</span>
+                    <span class="font-medium text-gray-700">Dota 2 个人战绩</span>
                     <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
                 </a>
                 <a href="spectre_guide.html" class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
-                    <span class="font-medium text-gray-700">幽鬼 (7.40c) 深度攻略</span>
+                    <span class="font-medium text-gray-700">幽鬼攻略 (7.40c)</span>
+                    <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+                </a>
+                <a href="slark_guide.html" class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                    <span class="font-medium text-gray-700">斯拉克攻略 (7.40c)</span>
                     <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
                 </a>
             </div>
             <div class="mt-8 border-t pt-4">
-                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-2">系统状态</p>
+                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-2">Service Status</p>
                 <div class="flex gap-4">
-                    <div class="flex items-center gap-1 text-[10px] text-green-600"><i class="fa-solid fa-circle text-[6px]"></i> Stock API</div>
-                    <div class="flex items-center gap-1 text-[10px] text-green-600"><i class="fa-solid fa-circle text-[6px]"></i> RSSHub</div>
+                    <div class="flex items-center gap-1 text-[10px] text-green-600"><i class="fa-solid fa-circle text-[6px]"></i> Global Monitor</div>
                     <div class="flex items-center gap-1 text-[10px] text-green-600"><i class="fa-solid fa-circle text-[6px]"></i> Swarm</div>
                 </div>
             </div>
