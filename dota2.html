@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Andy's Dota 2 Mission Control</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap');
@@ -45,7 +46,7 @@
             </div>
             <div class="text-right">
                 <p class="text-sm text-gray-500 uppercase">System Status: <span class="text-green-500">Online</span></p>
-                <p class="text-sm text-gray-500">Last Sync: 2026-02-25 12:15 UTC</p>
+                <p class="text-sm text-gray-500">Last Sync: 2026-02-26 00:20 CST</p>
             </div>
         </header>
 
@@ -72,16 +73,6 @@
                 <div class="progress-bar h-1 mt-3">
                     <div class="progress-fill" style="width: 85%"></div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Rank Trend Chart -->
-        <div class="card-glass p-6 rounded-xl mb-10">
-            <h3 class="text-xl font-bold uppercase tracking-widest text-gray-500 mb-6 flex items-center gap-2">
-                <i class="fa-solid fa-chart-line text-blue-400"></i> MMR 趋势追踪 (MMR Trajectory)
-            </h3>
-            <div class="h-[300px]">
-                <canvas id="rankChart"></canvas>
             </div>
         </div>
 
@@ -134,7 +125,7 @@
             <!-- Match History -->
             <div class="lg:col-span-2 space-y-4">
                 <h3 class="text-xl font-bold uppercase tracking-widest text-gray-500 flex items-center gap-2">
-                    <i class="fa-solid fa-clock-rotate-left"></i> Match History
+                    <i class="fa-solid fa-clock-rotate-left"></i> Recent 10 Matches
                 </h3>
                 <div class="space-y-3">
                     <!-- Match 1 (Spectre) -->
@@ -174,11 +165,52 @@
                         </div>
                     </div>
 
-                    <h3 class="text-xl font-bold uppercase tracking-widest text-gray-500 mt-10 mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-history"></i> Recent 10 Matches
-                    </h3>
-
-                    <!-- Match 1 -->
+                    <!-- Match History Start -->
+                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-red-500">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
+                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/spectre.png" alt="Spectre" class="opacity-80">
+                            </div>
+                            <div>
+                                <h4 class="font-bold">幽鬼 (Spectre)</h4>
+                                <p class="text-xs text-gray-500">2026-02-25 22:18 | 天梯</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-red-400 font-bold italic">LOSS</p>
+                            <p class="text-xs text-gray-400">2 / 5 / 6</p>
+                        </div>
+                    </div>
+                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-red-500">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
+                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/razor.png" alt="Razor" class="opacity-80">
+                            </div>
+                            <div>
+                                <h4 class="font-bold">剃刀 (Razor)</h4>
+                                <p class="text-xs text-gray-500">2026-02-25 21:15 | 天梯</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-red-400 font-bold italic">LOSS</p>
+                            <p class="text-xs text-gray-400">13 / 7 / 12</p>
+                        </div>
+                    </div>
+                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-green-500">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
+                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/spectre.png" alt="Spectre" class="opacity-80">
+                            </div>
+                            <div>
+                                <h4 class="font-bold">幽鬼 (Spectre)</h4>
+                                <p class="text-xs text-gray-500">2026-02-25 17:38 | 天梯</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-green-400 font-bold italic">WIN</p>
+                            <p class="text-xs text-gray-400">4 / 2 / 21</p>
+                        </div>
+                    </div>
                     <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-green-500">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
@@ -194,7 +226,6 @@
                             <p class="text-xs text-gray-400">6 / 1 / 20</p>
                         </div>
                     </div>
-                    <!-- Match 2 -->
                     <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-green-500">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
@@ -210,7 +241,6 @@
                             <p class="text-xs text-gray-400">12 / 1 / 12</p>
                         </div>
                     </div>
-                    <!-- Match 3 -->
                     <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-red-500">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
@@ -226,7 +256,6 @@
                             <p class="text-xs text-gray-400">5 / 4 / 9</p>
                         </div>
                     </div>
-                    <!-- Match 4 -->
                     <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-green-500">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
@@ -242,102 +271,6 @@
                             <p class="text-xs text-gray-400">14 / 1 / 18</p>
                         </div>
                     </div>
-                    <!-- Match 5 -->
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-red-500">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/spectre.png" alt="Spectre" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold">幽鬼 (Spectre)</h4>
-                                <p class="text-xs text-gray-500">2026-02-23 21:07 | 天梯</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-red-400 font-bold italic">LOSS</p>
-                            <p class="text-xs text-gray-400">5 / 12 / 14</p>
-                        </div>
-                    </div>
-                    <!-- Match 6 -->
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-green-500">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/lich.png" alt="Lich" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold">巫妖 (Lich)</h4>
-                                <p class="text-xs text-gray-500">2026-02-23 20:03 | 天梯</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-green-400 font-bold italic">WIN</p>
-                            <p class="text-xs text-gray-400">9 / 9 / 26</p>
-                        </div>
-                    </div>
-                    <!-- Match 7 -->
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-green-500">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/spectre.png" alt="Spectre" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold">幽鬼 (Spectre)</h4>
-                                <p class="text-xs text-gray-500">2026-02-23 19:31 | 天梯</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-green-400 font-bold italic">WIN</p>
-                            <p class="text-xs text-gray-400">2 / 1 / 15</p>
-                        </div>
-                    </div>
-                    <!-- Match 8 -->
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-green-500">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/slark.png" alt="Slark" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold">斯拉克 (Slark)</h4>
-                                <p class="text-xs text-gray-500">2026-02-23 18:39 | 天梯</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-green-400 font-bold italic">WIN</p>
-                            <p class="text-xs text-gray-400">26 / 6 / 21</p>
-                        </div>
-                    </div>
-                    <!-- Match 9 -->
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-red-500">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/ogre_magi.png" alt="Ogre Magi" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold">食人魔魔法师 (Ogre Magi)</h4>
-                                <p class="text-xs text-gray-500">2026-02-23 17:30 | 天梯</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-red-400 font-bold italic">LOSS</p>
-                            <p class="text-xs text-gray-400">4 / 9 / 15</p>
-                        </div>
-                    </div>
-                    <!-- Match 10 -->
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-green-500">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/spectre.png" alt="Spectre" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold">幽鬼 (Spectre)</h4>
-                                <p class="text-xs text-gray-500">2026-02-23 16:45 | 天梯</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-green-400 font-bold italic">WIN</p>
-                            <p class="text-xs text-gray-400">10 / 0 / 19</p>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -348,13 +281,13 @@
                         <i class="fa-solid fa-brain"></i> AI Coach Insights
                     </h3>
                     <div class="bg-red-900/10 border border-red-500/20 p-6 rounded-xl">
-                        <p class="text-red-400 font-bold mb-2 uppercase text-sm">💡 Focus: Positioning</p>
+                        <p class="text-red-400 font-bold mb-2 uppercase text-sm">💡 Focus: High Ground Defense</p>
                         <p class="text-gray-300 text-sm leading-relaxed mb-4">
-                            Andy, 你的幽鬼胜率非常稳(53%)，但近期场均死亡稍高。在加速模式中，建议 20 分钟后务必留买活，不要轻易在没视野的情况下收线。
+                            Andy, 今晚的幽鬼局整体胜率依然不错，但在高地防守时需要更注意切入时机。新版本 7.40c 下，幽鬼的敏捷成长极高，后期输出完全溢出，关键在于买活后的 Haunt 降临。
                         </p>
                         <ul class="text-xs text-gray-500 space-y-2">
-                            <li>• 幽鬼: 建议出装更新 -> 碎颅锤强化切入</li>
-                            <li>• 补刀效率: 优于 75% 同分段玩家</li>
+                            <li>• 连胜终结提醒: 休息一下再战</li>
+                            <li>• 补刀效率保持在 500GPM+</li>
                         </ul>
                     </div>
                 </div>
