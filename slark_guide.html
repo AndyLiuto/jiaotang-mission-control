@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andy's Dota 2 Mission Control | Slark Strategy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap');
+        body { background-color: #0d0d0d; color: #e0e0e0; font-family: 'Rajdhani', sans-serif; background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0d0d0d 100%); }
+        .glow-cyan { text-shadow: 0 0 10px rgba(34, 211, 238, 0.5); }
+        .card-glass { background: rgba(30, 30, 30, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .hero-banner { background: linear-gradient(to right, rgba(0,0,0,0.8), rgba(8, 145, 178, 0.4)), url('https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/slark.png'); background-size: cover; background-position: center 20%; }
+        .phase-card { border-top: 4px solid #0891b2; transition: all 0.3s ease; }
+        .phase-card:hover { background: rgba(8, 145, 178, 0.05); transform: scale(1.02); }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <nav class="mb-6"><a href="dota2.html" class="text-gray-500 hover:text-cyan-400 flex items-center gap-2 transition"><i class="fa-solid fa-arrow-left"></i> 返回总看板</a></nav>
+        <div class="hero-banner rounded-3xl p-8 md:p-12 mb-10 border border-cyan-500/30 text-center md:text-left">
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/slark.png" class="w-40 rounded-xl shadow-2xl border-2 border-cyan-500/50">
+                <div>
+                    <h1 class="text-5xl font-bold uppercase tracking-tighter glow-cyan mb-2">斯拉克 <span class="text-cyan-400">Slark</span></h1>
+                    <div class="flex gap-4 justify-center md:justify-start">
+                        <span class="px-3 py-1 bg-cyan-900/50 text-cyan-300 rounded-full text-xs font-bold border border-cyan-500/30">核心 (Position 1)</span>
+                        <span class="px-3 py-1 bg-gray-900/50 text-gray-300 rounded-full text-xs font-bold border border-gray-500/30">切入者 (Escape/Nuker)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="card-glass p-8 rounded-2xl phase-card">
+                <div class="flex items-center gap-3 mb-6"><i class="fa-solid fa-water text-2xl text-cyan-400"></i><h3 class="text-2xl font-bold uppercase">前期: 属性掠夺</h3></div>
+                <div class="mb-4 p-3 bg-cyan-900/20 border border-cyan-500/30 rounded-lg"><p class="text-xs font-bold text-cyan-300 uppercase mb-1">⚡ 7.40c 核心改动</p><p class="text-[10px] text-gray-400">现在 **能量转移 (Essence Shift)** 在 1 级时极具侵略性。利用你的先天敏捷优势，在补刀间隙多点对面。如果对面回复能力强，考虑早期补一个“腐蚀之球”。</p></div>
+                <ul class="space-y-4 text-sm">
+                    <li>**蹭属性**：不要强杀，利用 Shift 的偷取属性让对面线上越来越难受。</li>
+                    <li>**黑暗契约**：学会预判解控制（如人马的踩、斯温的锤）。</li>
+                </ul>
+            </div>
+            <div class="card-glass p-8 rounded-2xl phase-card" style="border-top-color: #22d3ee;">
+                <div class="flex items-center gap-3 mb-6"><i class="fa-solid fa-bolt text-2xl text-cyan-300"></i><h3 class="text-2xl font-bold uppercase">中期: 捕猎时间</h3></div>
+                <ul class="space-y-4 text-sm">
+                    <li>**连招顺序**：突袭(W) -> 黑暗契约(Q) -> 偷属性。</li>
+                    <li>**影子舞者**：利用大招被动找视野。如果被动回血断了，说明附近有眼。</li>
+                    <li>**核心装**：连击刀 + 隐刃（或跳刀）。</li>
+                </ul>
+            </div>
+            <div class="card-glass p-8 rounded-2xl phase-card" style="border-top-color: #a5f3fc;">
+                <div class="flex items-center gap-3 mb-6"><i class="fa-solid fa-skull-crossbones text-2xl text-white"></i><h3 class="text-2xl font-bold uppercase">后期: 属性之王</h3></div>
+                <ul class="space-y-4 text-sm">
+                    <li>**七进七出**：Slark 强在拉扯，打完一套开大或者跳走回满血再回来。</li>
+                    <li>**阿哈利姆神杖**：两次突袭充能是质变，必须出。</li>
+                    <li>**买活**：加速模式中，Slark 买活反打的能力极强，因为属性可能还没掉完。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
