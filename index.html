@@ -5,241 +5,187 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <title>焦糖 Mission Control</title>
-    <script>
-        const AUTH_CODE = "COOCaramel";
-        function checkAuth() {
-            const saved = localStorage.getItem("jiaotang_auth");
-            if (saved === AUTH_CODE) return;
-            const input = prompt("请输入焦糖授权码 (🍮):");
-            if (input === AUTH_CODE) {
-                localStorage.setItem("jiaotang_auth", AUTH_CODE);
-            } else {
-                document.body.innerHTML = "<h1 style='padding:50px;text-align:center;'>🔒 访问被拒绝。请向焦糖获取授权码。</h1>";
-                window.stop();
-            }
-        }
-        checkAuth();
-    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * { box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 20px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #eef2f1; }
-        h1 { color: #d97706; margin-bottom: 30px; font-size: 24px; }
-        h2 { font-size: 18px; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px; margin-top: 0; color: #1f2937; }
-        .status { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #eef2f1; transition: transform 0.2s; }
+        .card:hover { transform: translateY(-2px); }
+        h1 { color: #d97706; margin-bottom: 30px; font-size: 24px; display: flex; align-items: center; gap: 10px; }
+        h2 { font-size: 18px; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px; margin-top: 0; color: #1f2937; display: flex; align-items: center; gap: 8px; }
+        .status { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .status-live { background: #fee2e2; color: #991b1b; animation: blink 1s infinite; }
         .status-upcoming { background: #dbeafe; color: #1e40af; }
+        .status-done { background: #f3f4f6; color: #6b7280; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        .section-sub { font-size: 14px; font-weight: bold; color: #9a3412; margin: 15px 0 10px 0; }
-        .footer { text-align: center; margin-top: 40px; color: #9ca3af; font-size: 12px; }
-        .team-logo { font-size: 20px; margin-right: 8px; }
-        .match-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #e5e7eb; }
-        .match-opponent { font-weight: 500; }
-        .match-date { font-size: 12px; color: #6b7280; }
-        .task-item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f9fafb; }
-        .task-title { font-weight: 600; display: block; margin-bottom: 4px; }
-        .task-meta { font-size: 12px; color: #6b7280; }
-        .summary-box { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 20px; border-radius: 12px; text-align: center; }
-        .summary-box.profit { background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%); }
-        .summary-box.loss { background: linear-gradient(135deg, #bbf7d0 0%, #86efac 100%); }
-        .summary-value { font-size: 32px; font-weight: bold; color: #1f2937; }
-        .summary-label { font-size: 12px; color: #6b7280; margin-top: 5px; }
-        .link-btn { display: inline-block; background: #d97706; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 14px; margin-top: 15px; }
+        .section-sub { font-size: 14px; font-weight: bold; color: #9a3412; margin: 15px 0 8px 0; display: flex; align-items: center; justify-content: space-between; }
+        .match-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #e5e7eb; }
+        .match-info { flex: 1; }
+        .match-opponent { font-weight: 600; font-size: 14px; display: block; }
+        .match-date { font-size: 11px; color: #6b7280; margin-top: 2px; }
+        .match-score { font-family: monospace; font-weight: bold; color: #1f2937; background: #f9fafb; padding: 2px 6px; border-radius: 4px; }
+        .task-meta { font-size: 11px; color: #6b7280; margin-top: 5px; line-height: 1.4; }
+        .stock-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9fafb; }
+        .stock-name { font-size: 14px; font-weight: 500; }
+        .stock-price { font-weight: 700; text-align: right; }
+        .stock-pct { font-size: 11px; font-weight: bold; }
+        .up { color: #ef4444; }
+        .down { color: #22c55e; }
+        .footer { text-align: center; margin-top: 40px; color: #9ca3af; font-size: 11px; letter-spacing: 1px; }
+        .link-btn { display: inline-block; background: #d97706; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; margin-top: 15px; }
         .link-btn:hover { background: #b45309; }
     </style>
 </head>
 <body>
-    <h1>🍮 焦糖 Mission Control</h1>
+    <h1><span class="text-3xl">🍮</span> 焦糖 Mission Control</h1>
 
     <div class="grid">
-        <!-- 持仓摘要 -->
-        <div class="card" style="border-left: 4px solid #ef4444;">
-            <h2>💰 持仓摘要</h2>
-            <div class="summary-box profit" id="summaryBox">
-                <div class="summary-value" id="totalPnL">+¥479</div>
-                <div class="summary-label">总盈亏 | 3 只持仓</div>
-                <div style="font-size: 14px; margin-top: 8px; color: #22c55e;">今日 -¥37</div>
+        <!-- 高频监控 -->
+        <div class="card" style="border-top: 4px solid #3b82f6;">
+            <h2><i class="fa-solid fa-chart-line"></i> 市场实时监控</h2>
+            <div class="stock-row">
+                <div class="stock-name">沪深300ETF (510300)</div>
+                <div class="stock-price text-right">
+                    <div class="up">4.777</div>
+                    <div class="stock-pct up">+1.29%</div>
+                </div>
             </div>
-            <div style="text-align: center;">
-                <a href="http://aiserver:3456" class="link-btn" target="_blank">📊 查看完整持仓</a>
+            <div class="stock-row">
+                <div class="stock-name">隆基绿能 (601012)</div>
+                <div class="stock-price text-right">
+                    <div class="up">18.51</div>
+                    <div class="stock-pct up">+1.26%</div>
+                </div>
+            </div>
+            <div class="stock-row">
+                <div class="stock-name">红利低波ETF (512890)</div>
+                <div class="stock-price text-right">
+                    <div class="up">1.179</div>
+                    <div class="stock-pct up">+0.60%</div>
+                </div>
+            </div>
+            <div class="stock-row">
+                <div class="stock-name">中国东航 (600115)</div>
+                <div class="stock-price text-right">
+                    <div class="up">5.83</div>
+                    <div class="stock-pct up">+0.52%</div>
+                </div>
+            </div>
+            <div class="stock-row">
+                <div class="stock-name">TE Connectivity (TEL.US)</div>
+                <div class="stock-price text-right">
+                    <div style="color: #1f2937;">241.44</div>
+                    <div class="stock-pct" style="color: #6b7280;">Hold</div>
+                </div>
+            </div>
+            <div class="task-meta mt-4 flex justify-between items-center">
+                <span>🕒 更新: 2026-02-25 13:05</span>
+                <span class="text-blue-500 font-bold">交易中</span>
+            </div>
+            <div class="p-3 bg-blue-50 rounded-lg mt-4 text-[11px]">
+                <p class="text-blue-700 font-semibold mb-1">🎯 关键水位提醒</p>
+                <ul class="space-y-1 text-blue-600">
+                    <li>• 隆基 18.51 (逼近突破点 18.60)</li>
+                    <li>• 红利低波 1.179 (远高于入场点 1.165)</li>
+                </ul>
             </div>
         </div>
 
         <!-- 体育中心 -->
-        <div class="card" style="border-left: 4px solid #ef4444;">
-            <h2>🏆 体育中心</h2>
+        <div class="card" style="border-top: 4px solid #ef4444;">
+            <h2><i class="fa-solid fa-trophy"></i> 体育战略中心</h2>
             
-            <div class="section-sub"><span class="team-logo">🔴</span> 阿森纳</div>
+            <div class="section-sub"><span>🔴 阿森纳 (Arsenal)</span> <a href="https://andyliuto.github.io/jiaotang-mission-control/spectre_guide.html" class="text-[10px] text-red-500 uppercase hover:underline">近期赛果 &gt;</a></div>
             <div class="match-row">
-                <div><span class="match-opponent">vs 桑德兰 (Sunderland)</span><div class="match-date">✅ 3-0 大胜 (Emirates)</div></div>
-                <span class="status status-live">完赛</span>
+                <div class="match-info">
+                    <span class="match-opponent">vs 热刺 (Tottenham)</span>
+                    <span class="match-date">2026-02-22 | 北伦敦德比</span>
+                </div>
+                <div class="text-right">
+                    <span class="match-score">4 - 1</span>
+                    <span class="status status-done ml-2">WIN</span>
+                </div>
             </div>
-            <div class="task-meta">⚽️ 进球: 祖比门迪 (42'), 约克雷斯 x2 (66', 90'+3)</div>
-            <div class="task-meta" style="color: #d97706;">🏆 榜首领先 9 分!</div>
-            <div class="match-row" style="border-top: 1px dashed #e5e7eb;">
-                <div><span class="match-opponent">vs 布伦特福德 (Brentford)</span><div class="match-date">Feb 13 (Fri) 04:00 北京</div></div>
-                <span class="status status-upcoming">即将</span>
+            <div class="task-meta font-medium text-red-600">⚽️ Eze 梅开二度！Gyökeres 状态火热。伦敦是红色的！</div>
+            <div class="match-row border-none pb-0">
+                <div class="match-info">
+                    <span class="match-opponent">vs 曼城 (Man City)</span>
+                    <span class="match-date">Mar 22 (Sun) 00:30 北京 | 联赛杯决赛</span>
+                </div>
+                <span class="status status-upcoming">即将争冠</span>
             </div>
 
-            <div class="section-sub"><span class="team-logo">🔥</span> 开拓者 (杨汉森)</div>
+            <div class="section-sub"><span>⚔️ XG Xtreme Gaming</span> <a href="dota2.html" class="text-[10px] text-purple-500 uppercase hover:underline">DOTA 看板 &gt;</a></div>
             <div class="match-row">
-                <div><span class="match-opponent">🌟 全明星新秀赛!</span><div class="match-date">杨汉森入选 2026 Rising Stars</div></div>
-                <span class="status status-upcoming">荣耀</span>
+                <div class="match-info">
+                    <span class="match-opponent">vs PARIVISION</span>
+                    <span class="match-date">2026-02-24 | DL S28 小组赛2</span>
+                </div>
+                <div class="text-right">
+                    <span class="match-score">2 - 0</span>
+                    <span class="status status-done ml-2">WIN</span>
+                </div>
             </div>
-            <div class="task-meta">🇨🇳 队史纪录：杨汉森成为开拓者重点培养对象</div>
-            <div class="match-row" style="border-top: 1px dashed #e5e7eb;">
-                <div><span class="match-opponent">vs 森林狼 (Timberwolves)</span><div class="match-date">Feb 12 (Thu) 10:00 北京</div></div>
-                <span class="status status-upcoming">即将</span>
+            <div class="match-row border-none pb-0">
+                <div class="match-info">
+                    <span class="match-opponent">vs Team Falcons</span>
+                    <span class="match-date">Feb 25 (Wed) 21:30 北京 | DL S28</span>
+                </div>
+                <span class="status status-live">今晚开战</span>
             </div>
 
-            <div class="section-sub"><span class="team-logo">⚔️</span> XG Xtreme Gaming</div>
+            <div class="section-sub"><span>🔥 开拓者 (杨汉森)</span></div>
             <div class="match-row">
-                <div><span class="match-opponent">BLAST Slam VI (Play-In)</span><div class="match-date">不敌 Falcons, 遗憾出局</div></div>
-                <span class="status status-live">完赛</span>
-            </div>
-            <div class="task-meta">❌ Play-In 阶段: 0-2 负于 Team Falcons</div>
-            <div class="section-sub" style="font-size: 12px; color: #ff9800;">🔜 下一赛事: 等待官方公布</div>
-        </div>
-
-        <!-- 高频监控 -->
-        <div class="card" style="border-left: 4px solid #3b82f6;">
-            <h2>📉 高频监控 (交易中)</h2>
-            <div class="match-row">
-                <div><span class="match-opponent">沪深300ETF (510300)</span></div>
-                <div style="text-align: right;">
-                    <div style="font-weight:bold; color:#ef4444;">4.727</div>
-                    <div style="font-size:12px; color:#ef4444;">+0.08%</div>
+                <div class="match-info">
+                    <span class="match-opponent">vs 凯尔特人 (Celtics)</span>
+                    <span class="match-date">2026-02-24 | 常规赛</span>
+                </div>
+                <div class="text-right">
+                    <span class="match-score">108 - 114</span>
+                    <span class="status status-done ml-2">LOSS</span>
                 </div>
             </div>
-            <div class="match-row">
-                <div><span class="match-opponent">隆基绿能 (601012)</span></div>
-                <div style="text-align: right;">
-                    <div style="font-weight:bold; color:#22c55e;">18.49</div>
-                    <div style="font-size:12px; color:#22c55e;">-0.54%</div>
+            <div class="match-row border-none pb-0">
+                <div class="match-info">
+                    <span class="match-opponent">vs 湖人 (Lakers)</span>
+                    <span class="match-date">Feb 26 (Thu) 11:30 北京</span>
                 </div>
-            </div>
-            <div class="match-row">
-                <div><span class="match-opponent">红利低波ETF (512890)</span></div>
-                <div style="text-align: right;">
-                    <div style="font-weight:bold; color:#22c55e;">1.177</div>
-                    <div style="font-size:12px; color:#22c55e;">-0.93%</div>
-                </div>
-            </div>
-            <div class="match-row">
-                <div><span class="match-opponent">易方达消费行业 (110022)</span></div>
-                <div style="text-align: right;">
-                    <div style="font-weight:bold; color:#22c55e;">3.3720</div>
-                    <div style="font-size:12px; color:#22c55e;">-1.00%</div>
-                </div>
-            </div>
-            <div class="match-row">
-                <div><span class="match-opponent">TE Connectivity (TEL.US)</span></div>
-                <div style="text-align: right;">
-                    <div style="font-weight:bold; color:#ef4444;">$227.41</div>
-                    <div style="font-size:12px; color:#ef4444;">+0.87% (盘后)</div>
-                </div>
-            </div>
-             <div class="task-meta" style="margin-top:10px;">更新时间: 07:25 (2026-02-13)</div>
-             <div class="task-meta" style="color:#ef4444; font-weight:bold;">⚠️ 隆基 18.50：跌破 18.60 警戒线</div>
-             <div class="task-meta" style="color:#3b82f6; font-weight:bold;">🔵 红利低波：等待 1.165 入场机会</div>
-        </div>
-
-        <!-- 4K 壁纸库 -->
-        <div class="card" style="border-left: 4px solid #8b5cf6;">
-            <h2>🖼️ 4K 壁纸库 (无损下载)</h2>
-            <div class="task-item">
-                <span class="task-title">🚀 赛博街景 (极致 4x / 9K 垂直分辨率)</span>
-                <div class="task-meta">9408 x 20480 (JPG) | <a href="./assets/Upscale_x4_Result.jpg" target="_blank" style="color:#8b5cf6;font-weight:bold;">点击下载极致原图</a></div>
-            </div>
-            <div class="task-item">
-                <span class="task-title">🌃 赛博街景 (FLUX 2x Jasper)</span>
-                <div class="task-meta">2048 x 4544 | <a href="./assets/Upscale_x2_Result.png" target="_blank" style="color:#8b5cf6;font-weight:bold;">点击下载原图 (已修正)</a></div>
-            </div>
-            <div class="task-item">
-                <span class="task-title">☕️ 咖啡雪云 (高清重制)</span>
-                <div class="task-meta">4824 x 8760 | <a href="./assets/coffee_4k.png" target="_blank" style="color:#8b5cf6;font-weight:bold;">点击下载原图</a></div>
-            </div>
-            <div class="task-item">
-                <span class="task-title">🎨 咖啡雪云 (焦糖模仿版)</span>
-                <div class="task-meta">4096 x 7360 | <a href="./assets/coffee_dream_4k.png" target="_blank" style="color:#8b5cf6;font-weight:bold;">点击下载原图</a></div>
-            </div>
-            <div class="task-item">
-                <span class="task-title">🐎 405号白马 (高清修正)</span>
-                <div class="task-meta">3840 x 5120 | <a href="./assets/horse_upscaled_no_watermark.png" target="_blank" style="color:#8b5cf6;font-weight:bold;">点击下载原图</a></div>
-            </div>
-            <div class="task-item">
-                <span class="task-title">🐎 Hermès 风格 (高清修正)</span>
-                <div class="task-meta">3764 x 8192 | <a href="./assets/hermes_4k.png" target="_blank" style="color:#8b5cf6;font-weight:bold;">点击下载原图</a></div>
-            </div>
-            <div class="task-item">
-                <span class="task-title">🎨 焦糖原创模仿 (马儿)</span>
-                <div class="task-meta">4096 x 5120 | <a href="./assets/dream_retry_4k.png" target="_blank" style="color:#8b5cf6;font-weight:bold;">点击下载原图</a></div>
-            </div>
-            <div class="task-meta" style="background:#f3f4f6; padding:8px; border-radius:4px; font-size:11px;">
-                💡 提示：Telegram 预览会压缩图片。请始终通过此页面链接下载 100% 无损的 4K 原画文件。
+                <span class="status status-upcoming">关键一役</span>
             </div>
         </div>
 
-        <!-- NotebookLM PPT -->
-        <div class="card" style="border-left: 4px solid #8b5cf6;">
-            <h2>📊 NotebookLM PPT</h2>
-            <div class="task-item">
-                <span class="task-title">🔥 鬼灭之刃 (Demon Slayer) 中文版</span>
-                <div class="task-meta">PDF 幻灯片 | <a href="./assets/Demon_Slayer_PPT_Latest.pdf" target="_blank" style="color:#8b5cf6;font-weight:bold;">点击下载 (最新版)</a></div>
+        <!-- 快速入口 -->
+        <div class="card" style="border-top: 4px solid #10b981;">
+            <h2><i class="fa-solid fa-bolt"></i> 快速实验室</h2>
+            <div class="flex flex-col gap-3 mt-4">
+                <a href="dota2.html" class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                    <span class="font-medium text-gray-700">Dota 2 上分看板</span>
+                    <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+                </a>
+                <a href="spectre_guide.html" class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                    <span class="font-medium text-gray-700">幽鬼 (7.40c) 深度攻略</span>
+                    <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+                </a>
+                <a href="./assets/Upscale_x4_Result.jpg" target="_blank" class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                    <span class="font-medium text-gray-700">最新 4K 壁纸下载</span>
+                    <i class="fa-solid fa-download text-gray-400 text-xs"></i>
+                </a>
             </div>
-        </div>
-
-        <!-- 系统状态 -->
-        <div class="card" style="border-left: 4px solid #10b981;">
-            <h2>🛠️ 系统状态</h2>
-            <div class="task-item">
-                <span class="task-title">✅ 股票追踪器</span>
-                <div class="task-meta"><a href="http://aiserver:3456" target="_blank" style="color:#3b82f6;text-decoration:none;">http://aiserver:3456</a> 运行中</div>
-            </div>
-            <div class="task-item">
-                <span class="task-title">✅ 小红书 MCP</span>
-                <div class="task-meta" id="xhsStatus">Session 正常 (已上线)</div>
-            </div>
-            <div class="task-item">
-                <span class="task-title">✅ RSSHub</span>
-                <div class="task-meta">Twitter 抓取已修复</div>
+            <div class="mt-8 border-t pt-4">
+                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-2">系统状态</p>
+                <div class="flex gap-4">
+                    <div class="flex items-center gap-1 text-[10px] text-green-600"><i class="fa-solid fa-circle text-[6px]"></i> Stock API</div>
+                    <div class="flex items-center gap-1 text-[10px] text-green-600"><i class="fa-solid fa-circle text-[6px]"></i> RSSHub</div>
+                    <div class="flex items-center gap-1 text-[10px] text-green-600"><i class="fa-solid fa-circle text-[6px]"></i> Swarm</div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="footer">
-        焦糖为你巡航 🍮
+    <div class="footer uppercase tracking-widest">
+        Integrated Intelligence by Caramel 🍮
     </div>
-
-    <script>
-        // 从股票追踪器 API 获取摘要
-        async function fetchSummary() {
-            try {
-                const res = await fetch('/api/holdings');
-                const data = await res.json();
-                const { summary } = data;
-                
-                const pnlSign = summary.totalPnL >= 0 ? '+' : '';
-                const todaySign = summary.totalPnLToday >= 0 ? '+' : '';
-                
-                document.getElementById('totalPnL').innerHTML = `
-                    <div style="font-size: 24px;">累计 ${pnlSign}¥${summary.totalPnL.toFixed(0)}</div>
-                    <div style="font-size: 18px; margin-top: 5px; color: ${summary.totalPnLToday >= 0 ? '#ef4444' : '#22c55e'}">
-                        今日 ${todaySign}¥${summary.totalPnLToday.toFixed(0)}
-                    </div>
-                `;
-                
-                const box = document.getElementById('summaryBox');
-                box.classList.remove('profit', 'loss');
-                box.classList.add(summary.totalPnL >= 0 ? 'profit' : 'loss');
-            } catch (e) {
-                document.getElementById('totalPnL').textContent = '无法连接';
-            }
-        }
-        
-        fetchSummary();
-        setInterval(fetchSummary, 60000);
-    </script>
 </body>
 </html>
