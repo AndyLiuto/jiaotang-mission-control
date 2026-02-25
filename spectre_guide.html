@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andy's Dota 2 Mission Control | Spectre Strategy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap');
+        body {
+            background-color: #0d0d0d;
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0d0d0d 100%);
+        }
+        .glow-purple { text-shadow: 0 0 10px rgba(168, 85, 247, 0.5); }
+        .card-glass {
+            background: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .hero-banner {
+            background: linear-gradient(to right, rgba(0,0,0,0.8), rgba(88, 28, 135, 0.4)), url('https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/spectre.png');
+            background-size: cover;
+            background-position: center 20%;
+        }
+        .phase-card {
+            border-top: 4px solid #a855f7;
+            transition: all 0.3s ease;
+        }
+        .phase-card:hover { background: rgba(168, 85, 247, 0.05); transform: scale(1.02); }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <!-- Breadcrumb & Back -->
+        <nav class="mb-6">
+            <a href="dota2.html" class="text-gray-500 hover:text-purple-400 flex items-center gap-2 transition">
+                <i class="fa-solid fa-arrow-left"></i> 返回总看板
+            </a>
+        </nav>
+
+        <!-- Hero Header -->
+        <div class="hero-banner rounded-3xl p-8 md:p-12 mb-10 border border-purple-500/30">
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/spectre.png" class="w-40 rounded-xl shadow-2xl border-2 border-purple-500/50">
+                <div class="text-center md:text-left">
+                    <h1 class="text-5xl font-bold uppercase tracking-tighter glow-purple mb-2">幽鬼 <span class="text-purple-400">Spectre</span></h1>
+                    <div class="flex gap-4 justify-center md:justify-start">
+                        <span class="px-3 py-1 bg-purple-900/50 text-purple-300 rounded-full text-xs font-bold border border-purple-500/30">核心 (Position 1)</span>
+                        <span class="px-3 py-1 bg-gray-900/50 text-gray-300 rounded-full text-xs font-bold border border-gray-500/30">后期凯瑞 (Late Game Carry)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Strategy Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- Early Game -->
+            <div class="card-glass p-8 rounded-2xl phase-card">
+                <div class="flex items-center gap-3 mb-6">
+                    <i class="fa-solid fa-seedling text-2xl text-purple-400"></i>
+                    <h3 class="text-2xl font-bold uppercase">前期: 抗压与发育</h3>
+                </div>
+                <p class="text-sm text-gray-400 mb-6 leading-relaxed">
+                    幽鬼的前期非常脆弱，目标不是杀人，而是**“赖线”**。
+                </p>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex gap-3">
+                        <span class="text-purple-500 font-bold">01.</span>
+                        <span>**核心装**：优先动力鞋+大魔棒。如果对面消耗强，考虑补个护腕。</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-purple-500 font-bold">02.</span>
+                        <span>**荒芜之刃**：利用 Q 进树林躲避追击或收远端残血兵。</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-purple-500 font-bold">03.</span>
+                        <span>**苟住就是胜利**：10分钟前只要不阵亡超过2次，就算线优。</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Mid Game -->
+            <div class="card-glass p-8 rounded-2xl phase-card" style="border-top-color: #d8b4fe;">
+                <div class="flex items-center gap-3 mb-6">
+                    <i class="fa-solid fa-ghost text-2xl text-purple-300"></i>
+                    <h3 class="text-2xl font-bold uppercase">中期: 幽灵降临</h3>
+                </div>
+                <p class="text-sm text-gray-400 mb-6 leading-relaxed">
+                    有了大招后，你可以**全图发育，随时参战**。
+                </p>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex gap-3">
+                        <span class="text-purple-300 font-bold">01.</span>
+                        <span>**刷钱与支援**：一个人在危险路带线，队友开团时直接开大（鬼影森森）降临收割。</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-purple-300 font-bold">02.</span>
+                        <span>**出装逻辑**：如果你顺，辉耀是质变；如果局势紧，刃甲+分身斧性价比最高。</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-purple-300 font-bold">03.</span>
+                        <span>**专切软柿子**：降临时优先锁定对方辅助（CM、WD等），利用荒芜的纯粹伤害快速减员。</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Late Game -->
+            <div class="card-glass p-8 rounded-2xl phase-card" style="border-top-color: #f3e8ff;">
+                <div class="flex items-center gap-3 mb-6">
+                    <i class="fa-solid fa-crown text-2xl text-white"></i>
+                    <h3 class="text-2xl font-bold uppercase">后期: 战场主宰</h3>
+                </div>
+                <p class="text-sm text-gray-400 mb-6 leading-relaxed">
+                    后期幽鬼是所有脆皮的噩梦，你就是**肉度与输出的集合体**。
+                </p>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex gap-3">
+                        <span class="text-white font-bold">01.</span>
+                        <span>**关键装**：龙心+分身斧+紫怨/深渊。阿哈利姆神杖（影步）在后期抓单极强。</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-white font-bold">02.</span>
+                        <span>**买活意识**：加速模式中后期务必留买活。死后买活开大降临回战场是翻盘神技。</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-white font-bold">03.</span>
+                        <span>**折射神技**：团战时往人堆里钻，你的肉度就是你的输出，让对面打你也不是，不打也不是。</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Hero Icons Grid -->
+        <div class="mt-12 card-glass p-8 rounded-2xl">
+            <h3 class="text-xl font-bold mb-6 text-gray-500 uppercase tracking-widest">英雄能力雷达 (Hero Capability)</h3>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="text-center p-4 bg-black/40 rounded-xl">
+                    <p class="text-xs text-gray-500 mb-2 uppercase">爆发 (Burst)</p>
+                    <div class="flex gap-1 justify-center">
+                        <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                        <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                        <div class="w-2 h-2 bg-gray-700 rounded-full"></div>
+                    </div>
+                </div>
+                <div class="text-center p-4 bg-black/40 rounded-xl">
+                    <p class="text-xs text-gray-500 mb-2 uppercase">生存 (Survive)</p>
+                    <div class="flex gap-1 justify-center text-purple-500">
+                        <i class="fa-solid fa-circle"></i><i class="fa-solid fa-circle"></i><i class="fa-solid fa-circle"></i>
+                    </div>
+                </div>
+                <!-- ... 其他雷达项 ... -->
+            </div>
+        </div>
+
+        <footer class="mt-16 pt-8 border-t border-gray-800 text-center text-gray-600 text-sm">
+            <p>Andy's Dota 2 Intelligence | Build Strategy by 焦糖</p>
+        </footer>
+    </div>
+</body>
+</html>
