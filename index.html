@@ -34,104 +34,80 @@
         .up { color: #ef4444; }
         .down { color: #22c55e; }
         .footer { text-align: center; margin-top: 40px; color: #9ca3af; font-size: 11px; letter-spacing: 1px; }
+        .link-btn { display: inline-block; background: #d97706; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; margin-top: 15px; }
+        .link-btn:hover { background: #b45309; }
+        .summary-box { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 15px; border-radius: 12px; text-align: center; margin-top: 10px; }
+        .summary-value { font-size: 24px; font-weight: bold; color: #1f2937; }
     </style>
 </head>
 <body>
     <h1><span class="text-3xl">🍮</span> 焦糖 Mission Control</h1>
 
     <div class="grid">
-        <!-- 高频监控 -->
-        <div class="card" style="border-top: 4px solid #3b82f6;">
-            <h2><i class="fa-solid fa-chart-line"></i> 市场实时监控</h2>
-            <div class="stock-row">
-                <div class="stock-name">沪深300ETF (510300)</div>
-                <div class="stock-price text-right">
-                    <div class="up">4.750</div>
-                    <div class="stock-pct up">+0.72%</div>
-                </div>
+        <!-- 持仓摘要 -->
+        <div class="card" style="border-top: 4px solid #f59e0b;">
+            <h2><i class="fa-solid fa-wallet"></i> 财富看板</h2>
+            <div class="summary-box">
+                <div class="summary-value" id="totalPnL">+¥479</div>
+                <div style="font-size: 11px; color: #6b7280;">今日变动: <span style="color:#ef4444;">+¥15.2</span></div>
             </div>
-            <div class="stock-row">
+            <div class="stock-row mt-4">
                 <div class="stock-name">隆基绿能 (601012)</div>
-                <div class="stock-price text-right">
-                    <div class="up">18.57</div>
-                    <div class="stock-pct up">+1.59%</div>
-                </div>
+                <div class="stock-price up">18.57 <span class="stock-pct">+1.59%</span></div>
             </div>
             <div class="stock-row">
-                <div class="stock-name">红利低波ETF (512890)</div>
-                <div class="stock-price text-right">
-                    <div class="down">1.169</div>
-                    <div class="stock-pct down">-0.26%</div>
-                </div>
+                <div class="stock-name">TE Connectivity (TEL)</div>
+                <div class="stock-price" style="color:#ef4444;">$241.44 <span class="stock-pct">+4.39%</span></div>
             </div>
-            <div class="stock-row">
-                <div class="stock-name">中国东航 (600115)</div>
-                <div class="stock-price text-right">
-                    <div class="down">5.76</div>
-                    <div class="stock-pct down">-0.69%</div>
-                </div>
-            </div>
-            <div class="stock-row border-none">
-                <div class="stock-name">TE Connectivity (TEL.US)</div>
-                <div class="stock-price text-right">
-                    <div style="color: #1f2937;">241.44</div>
-                    <div class="stock-pct" style="color: #6b7280;">Pre-market</div>
-                </div>
-            </div>
-            <div class="task-meta mt-4 flex justify-between items-center">
-                <span>🕒 更新: 2026-02-25 21:18</span>
-                <span class="text-gray-500 font-bold">休市中</span>
-            </div>
-            <div class="p-3 bg-blue-50 rounded-lg mt-4 text-[11px]">
-                <p class="text-blue-700 font-semibold mb-1">🎯 关键水位提醒</p>
-                <ul class="space-y-1 text-blue-600">
-                    <li>• 隆基 18.57 (收盘逼近突破点 18.60)</li>
-                    <li>• 红利低波 1.169 (接近入场点 1.165)</li>
-                </ul>
-            </div>
+            <div class="task-meta" style="color:#3b82f6; font-weight:bold;">⚠️ 隆基 18.57：蓄势冲击 18.60 突破点</div>
         </div>
 
         <!-- 体育中心 -->
         <div class="card" style="border-top: 4px solid #ef4444;">
             <h2><i class="fa-solid fa-trophy"></i> 体育战略中心</h2>
             
-            <div class="section-sub"><span>🔴 阿森纳 (Arsenal)</span> <a href="spectre_guide.html" class="text-[10px] text-red-500 uppercase hover:underline">攻略库 &gt;</a></div>
-            <div class="match-row border-none pb-0">
+            <div class="section-sub"><span>🔴 阿森纳 (Arsenal)</span></div>
+            <div class="match-row">
                 <div class="match-info">
                     <span class="match-opponent">vs 切尔西 (Chelsea)</span>
-                    <span class="match-date">Mar 01 (Sun) 23:30 北京 | 英超第27轮</span>
+                    <span class="match-date">Mar 02 (Mon) 00:30 北京</span>
                 </div>
                 <span class="status status-upcoming">下一场</span>
             </div>
-            <div class="task-meta text-[10px] text-gray-400">伦敦德比：主场迎战切尔西，争冠关键战。</div>
 
-            <div class="section-sub"><span>⚔️ XG Xtreme Gaming</span> <a href="dota2.html" class="text-[10px] text-purple-500 uppercase hover:underline">DOTA 看板 &gt;</a></div>
+            <div class="section-sub"><span>⚔️ XG Xtreme Gaming</span></div>
             <div class="match-row">
                 <div class="match-info">
                     <span class="match-opponent">vs BetBoom Team</span>
-                    <span class="match-date">Feb 25 | DreamLeague S28 GS2</span>
+                    <span class="match-date">Feb 25 (今晚) 18:30 北京</span>
                 </div>
-                <div class="text-right">
-                    <span class="match-score">1 - 1</span>
-                    <span class="status status-live ml-2">决胜局中</span>
-                </div>
+                <span class="status status-live">激战中</span>
             </div>
             <div class="match-row border-none pb-0">
                 <div class="match-info">
                     <span class="match-opponent">vs Team Falcons</span>
-                    <span class="match-date">Feb 26 (明天) 21:30 北京 | DL S28</span>
+                    <span class="match-date">Feb 26 (明天) 21:30 北京</span>
                 </div>
-                <span class="status status-upcoming">紧接下场</span>
+                <span class="status status-upcoming">复仇战</span>
             </div>
-            <div class="task-meta text-[10px] text-gray-400">战况：决胜局正在准备或激战中。今晚双赛已正轨。</div>
+        </div>
 
-            <div class="section-sub"><span>🔥 开拓者 (杨汉森)</span></div>
-            <div class="match-row border-none pb-0">
-                <div class="match-info">
-                    <span class="match-opponent">vs 湖人 (Lakers)</span>
-                    <span class="match-date">Feb 26 (Thu) 11:30 北京</span>
+        <!-- 4K 壁纸库 -->
+        <div class="card" style="border-top: 4px solid #8b5cf6;">
+            <h2><i class="fa-solid fa-image"></i> 4K 无损壁纸库</h2>
+            <div class="space-y-3 mt-4">
+                <div class="text-xs p-3 bg-gray-50 rounded-lg">
+                    <p class="font-bold">🚀 赛博街景 (极致 9K)</p>
+                    <a href="./assets/Upscale_x4_Result.jpg" target="_blank" class="text-purple-600 hover:underline">点击下载原图</a>
                 </div>
-                <span class="status status-upcoming">明日开战</span>
+                <div class="text-xs p-3 bg-gray-50 rounded-lg">
+                    <p class="font-bold">🌃 赛博街景 (FLUX 2x)</p>
+                    <a href="./assets/Upscale_x2_Result.png" target="_blank" class="text-purple-600 hover:underline">点击下载原图</a>
+                </div>
+                <div class="text-xs p-3 bg-gray-50 rounded-lg">
+                    <p class="font-bold">🐎 Hermès 风格 (4K)</p>
+                    <a href="./assets/hermes_4k.png" target="_blank" class="text-purple-600 hover:underline">点击下载原图</a>
+                </div>
             </div>
         </div>
 
@@ -146,6 +122,10 @@
                 <a href="spectre_guide.html" class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
                     <span class="font-medium text-gray-700">幽鬼攻略 (7.40c)</span>
                     <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+                </a>
+                <a href="./assets/Demon_Slayer_PPT_Latest.pdf" target="_blank" class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                    <span class="font-medium text-gray-700">NotebookLM PPT 下载</span>
+                    <i class="fa-solid fa-file-pdf text-gray-400 text-xs"></i>
                 </a>
             </div>
         </div>
