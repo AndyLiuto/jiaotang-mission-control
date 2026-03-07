@@ -65,10 +65,12 @@
       display: flex; align-items: center; gap: 8px;
     }
     .stock-row, .match-row {
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 10px;
       padding: 10px 0;
       border-bottom: 1px dashed rgba(148, 163, 184, .2);
     }
+    .match-row > div:first-child { flex: 1; min-width: 0; }
     .stock-row:last-child, .match-row:last-child { border-bottom: none; }
     .stock-name { font-size: 13px; color: #cbd5e1; }
     .stock-price { text-align: right; font-weight: 800; }
@@ -185,8 +187,9 @@
         <div class="match-row">
           <div>
             <div class="font-semibold text-sm">vs Team Spirit</div>
-            <div class="text-xs text-slate-400">03-07 19:45 · PGL/Wallachia/7/Group Stage#Round 1</div>
+            <div class="text-xs text-slate-400">03-07 19:45 · PGL Wallachia S7 · Group Stage R1</div>
           </div>
+          <div class="font-mono text-xs text-slate-300">DOTA</div>
         </div>
 
         <a href="dota2.html" class="cta"><i class="fa-solid fa-joystick"></i> 进入 Dota 2 战绩看板</a>
