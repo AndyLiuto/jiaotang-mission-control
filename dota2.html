@@ -1,369 +1,246 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andy's Dota 2 Mission Control</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap');
-        body {
-            background-color: #0d0d0d;
-            color: #e0e0e0;
-            font-family: 'Rajdhani', sans-serif;
-            background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0d0d0d 100%);
-        }
-        .glow-red { text-shadow: 0 0 10px rgba(255, 68, 68, 0.5); }
-        .card-glass {
-            background: rgba(30, 30, 30, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease;
-        }
-        .card-glass:hover { transform: translateY(-5px); border-color: rgba(255, 68, 68, 0.3); }
-        .rank-badge {
-            background: linear-gradient(135deg, #4a4a4a 0%, #2b2b2b 100%);
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
-        }
-        .progress-bar { background: #262626; border-radius: 4px; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, #ff4444, #ff8888); }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <title>Andy · Dota 2 战绩看板</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #090b12;
+      --panel: rgba(17, 24, 39, 0.72);
+      --panel-border: rgba(148, 163, 184, 0.16);
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --win: #22c55e;
+      --loss: #ef4444;
+      --accent: #f43f5e;
+      --gold: #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 560px at 85% -15%, rgba(244, 63, 94, 0.18), transparent 55%),
+        radial-gradient(900px 480px at 0% 100%, rgba(59, 130, 246, 0.15), transparent 55%),
+        var(--bg);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .wrap { max-width: 1200px; margin: 0 auto; }
+    .glass {
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      box-shadow: 0 14px 30px rgba(0,0,0,.35);
+    }
+    .hero-avatar {
+      width: 44px; height: 44px; border-radius: 10px; overflow: hidden;
+      border: 1px solid rgba(148,163,184,.28);
+      background: #0f172a;
+      flex-shrink: 0;
+    }
+    .hero-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .kda { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700;
+      border: 1px solid;
+    }
+    .chip-online { color: #34d399; background: rgba(16,185,129,.14); border-color: rgba(16,185,129,.35); }
+    .chip-rank { color: #fbbf24; background: rgba(245,158,11,.15); border-color: rgba(245,158,11,.38); }
+    .metric {
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(148,163,184,.18);
+      background: rgba(2, 6, 23, .45);
+    }
+    .metric .v { font-size: 30px; font-weight: 800; line-height: 1.1; }
+    .bar { height: 6px; background: rgba(148,163,184,.2); border-radius: 999px; overflow: hidden; }
+    .bar > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #f43f5e, #f59e0b); }
+    .section-title {
+      margin: 0 0 12px;
+      font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.1px;
+      color: #cbd5e1;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .list-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px dashed rgba(148,163,184,.24);
+    }
+    .list-row:last-child { border-bottom: none; }
+    .meta { color: var(--muted); font-size: 12px; }
+    .footer { text-align: center; margin-top: 14px; color: var(--muted); font-size: 11px; letter-spacing: .7px; }
+  </style>
 </head>
-<body class="p-4 md:p-8">
-    <div class="max-w-6xl mx-auto">
-        <!-- Header -->
-        <header class="flex flex-col md:flex-row justify-between items-center mb-10 border-b border-gray-800 pb-6">
-            <div class="flex items-center gap-4 mb-4 md:mb-0">
-                <div class="w-16 h-16 rounded-full rank-badge flex items-center justify-center border-2 border-red-500/30">
-                    <span class="text-2xl font-bold text-red-500">V</span>
-                </div>
-                <div>
-                    <h1 class="text-4xl font-bold tracking-wider uppercase glow-red">Andy <span class="text-gray-500">#MissionControl</span></h1>
-                    <p class="text-gray-400">Current Rank: <span class="text-red-400">先驱5</span> | MMR: 3877</p>
-                </div>
+<body>
+  <div class="wrap space-y-5">
+    <!-- Header -->
+    <header class="glass p-5">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h1 class="text-3xl md:text-4xl font-black tracking-wide">🎮 Andy · Dota 2 战绩看板</h1>
+          <p class="text-slate-400 mt-1">Mission Control · 焦糖战术中心</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="chip chip-online"><i class="fa-solid fa-circle text-[10px]"></i> 数据在线</span>
+          <span class="chip chip-rank"><i class="fa-solid fa-shield-halved"></i> 当前段位：先驱5</span>
+        </div>
+      </div>
+      <div class="mt-3 text-xs text-slate-400">Last Sync: 2026-03-07 16:01 CST</div>
+    </header>
+
+    <!-- Top Metrics -->
+    <section class="grid grid-cols-1 md:grid-cols-4 gap-3">
+      <div class="glass metric">
+        <div class="text-xs text-slate-400 uppercase">近期胜率</div>
+        <div class="v text-emerald-400">50%</div>
+        <div class="meta mt-1">最近 10 场：5W-5L</div>
+      </div>
+      <div class="glass metric">
+        <div class="text-xs text-slate-400 uppercase">平均 KDA</div>
+        <div class="v text-cyan-300">3.55</div>
+        <div class="meta mt-1">团队贡献稳定</div>
+      </div>
+      <div class="glass metric">
+        <div class="text-xs text-slate-400 uppercase">平均 GPM</div>
+        <div class="v text-amber-300">516</div>
+        <div class="meta mt-1">刷钱效率中上</div>
+      </div>
+      <div class="glass metric">
+        <div class="text-xs text-slate-400 uppercase">下个目标</div>
+        <div class="v text-rose-300">卫士1</div>
+        <div class="bar mt-2"><span style="width: 86%"></span></div>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <!-- Match History -->
+      <div class="glass p-4 lg:col-span-2">
+        <h2 class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> Recent Matches（最新10场）</h2>
+
+        <div class="space-y-1">
+          <div class="list-row">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="hero-avatar"><img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/windrunner.png" alt="风行者" /></div>
+              <div class="min-w-0">
+                <div class="font-semibold text-sm truncate">风行者</div>
+                <div class="meta">2026-03-06 22:39 · 天梯</div>
+              </div>
             </div>
             <div class="text-right">
-                <p class="text-sm text-gray-500 uppercase">System Status: <span class="text-green-500">Online</span></p>
-                <p class="text-sm text-gray-500">Last Sync: 2026-03-07 16:26 (Auto)</p>
+              <div class="text-red-400 font-extrabold">LOSS</div>
+              <div class="kda text-xs text-slate-300">6 / 8 / 10</div>
             </div>
-        </header>
+          </div>
 
-        <!-- Stats Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-            <div class="card-glass p-6 rounded-xl">
-                <p class="text-gray-400 text-sm uppercase mb-1">Recent Winrate</p>
-                <h2 class="text-3xl font-bold text-green-400">60.0%</h2>
-                <p class="text-xs text-gray-500 mt-2">Last 20 Matches (12W - 8L)</p>
+          <div class="list-row">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="hero-avatar"><img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/slark.png" alt="斯拉克" /></div>
+              <div class="min-w-0">
+                <div class="font-semibold text-sm truncate">斯拉克</div>
+                <div class="meta">2026-03-06 21:47 · 天梯</div>
+              </div>
             </div>
-            <div class="card-glass p-6 rounded-xl">
-                <p class="text-gray-400 text-sm uppercase mb-1">Avg KDA</p>
-                <h2 class="text-3xl font-bold text-blue-400">4.02</h2>
-                <p class="text-xs text-gray-500 mt-2">Elite positioning maintained</p>
+            <div class="text-right">
+              <div class="text-emerald-400 font-extrabold">WIN</div>
+              <div class="kda text-xs text-slate-300">10 / 5 / 17</div>
             </div>
-            <div class="card-glass p-6 rounded-xl">
-                <p class="text-gray-400 text-sm uppercase mb-1">Avg GPM</p>
-                <h2 class="text-3xl font-bold text-yellow-500">504</h2>
-                <p class="text-xs text-gray-500 mt-2">Consistent farming efficiency</p>
+          </div>
+
+          <div class="list-row">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="hero-avatar"><img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/earthshaker.png" alt="撼地者" /></div>
+              <div class="min-w-0">
+                <div class="font-semibold text-sm truncate">撼地者</div>
+                <div class="meta">2026-03-06 21:00 · 天梯</div>
+              </div>
             </div>
-            <div class="card-glass p-6 rounded-xl border-red-500/20">
-                <p class="text-gray-400 text-sm uppercase mb-1">Next Goal</p>
-                <h2 class="text-3xl font-bold text-red-500">Guardian I</h2>
-                <div class="progress-bar h-1 mt-3">
-                    <div class="progress-fill" style="width: 85%"></div>
-                </div>
+            <div class="text-right">
+              <div class="text-red-400 font-extrabold">LOSS</div>
+              <div class="kda text-xs text-slate-300">4 / 11 / 15</div>
             </div>
+          </div>
+
+          <div class="list-row">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="hero-avatar"><img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/slark.png" alt="斯拉克" /></div>
+              <div class="min-w-0">
+                <div class="font-semibold text-sm truncate">斯拉克</div>
+                <div class="meta">2026-03-06 19:52 · 天梯</div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-emerald-400 font-extrabold">WIN</div>
+              <div class="kda text-xs text-slate-300">6 / 7 / 16</div>
+            </div>
+          </div>
+
+          <div class="list-row">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="hero-avatar"><img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/earthshaker.png" alt="撼地者" /></div>
+              <div class="min-w-0">
+                <div class="font-semibold text-sm truncate">撼地者</div>
+                <div class="meta">2026-03-06 19:13 · 天梯</div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-red-400 font-extrabold">LOSS</div>
+              <div class="kda text-xs text-slate-300">1 / 5 / 4</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Side panel -->
+      <div class="space-y-4">
+        <div class="glass p-4">
+          <h2 class="section-title"><i class="fa-solid fa-chess-knight"></i> 当前英雄池</h2>
+          <div class="space-y-3 text-sm">
+            <div>
+              <div class="flex justify-between mb-1"><span>幽鬼</span><span class="text-emerald-400">9场 · 56%</span></div>
+              <div class="bar"><span style="width:56%"></span></div>
+            </div>
+            <div>
+              <div class="flex justify-between mb-1"><span>撼地者</span><span class="text-amber-300">5场 · 40%</span></div>
+              <div class="bar"><span style="width:40%"></span></div>
+            </div>
+            <div>
+              <div class="flex justify-between mb-1"><span>斯拉克</span><span class="text-emerald-400">4场 · 100%</span></div>
+              <div class="bar"><span style="width:100%"></span></div>
+            </div>
+          </div>
         </div>
 
-        <!-- 轮椅英雄推荐 (Meta Recommendations) -->
-        <div class="mb-10">
-            <h3 class="text-xl font-bold uppercase tracking-widest text-gray-500 mb-6 flex items-center gap-2">
-                <i class="fa-solid fa-wheelchair text-red-500"></i> 先驱/卫士段位“轮椅”推荐 (7.40c Meta)
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- 轮椅 1: 幽鬼 -->
-                <div class="card-glass p-5 rounded-xl border-l-4 border-purple-500 bg-purple-900/5">
-                    <div class="flex justify-between items-start mb-3">
-                        <h4 class="font-bold text-lg">幽鬼 (Spectre)</h4>
-                        <span class="text-xs bg-purple-500/20 text-purple-400 px-2 py-1 rounded">一号位胜率第一</span>
-                    </div>
-                    <p class="text-xs text-gray-400 mb-4">7.40c 降临回归，先天荒芜。现在的幽鬼肉得不讲理，伤害还贼高，是真正的上分“轮椅”。</p>
-                    <div class="flex justify-between items-center text-sm font-bold text-purple-400">
-                        <span>胜率: 56.1%</span>
-                        <a href="spectre_guide.html" class="hover:underline">攻略 <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
-                    </div>
-                </div>
-                <!-- 轮椅 2: 骷髅王 -->
-                <div class="card-glass p-5 rounded-xl border-l-4 border-red-500 bg-red-900/5">
-                    <div class="flex justify-between items-start mb-3">
-                        <h4 class="font-bold text-lg">骷髅王 (Wraith King)</h4>
-                        <span class="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded">容错率之王</span>
-                    </div>
-                    <p class="text-xs text-gray-400 mb-4">两格血就是硬道理。操作简单，暴击回血，非常适合先驱段位直接莽穿对面。</p>
-                    <div class="flex justify-between items-center text-sm font-bold text-red-400">
-                        <span>胜率: 55.8%</span>
-                        <span class="text-[10px] text-gray-600 font-normal italic">攻略更新中...</span>
-                    </div>
-                </div>
-                <!-- 轮椅 3: 巫妖 -->
-                <div class="card-glass p-5 rounded-xl border-l-4 border-blue-500 bg-blue-900/5">
-                    <div class="flex justify-between items-start mb-3">
-                        <h4 class="font-bold text-lg">巫妖 (Lich)</h4>
-                        <span class="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded">辅助首选</span>
-                    </div>
-                    <p class="text-xs text-gray-400 mb-4">冰霜护盾保人极强，大招弹弹弹在低分段团战中经常能拿到三杀四杀。</p>
-                    <div class="flex justify-between items-center text-sm font-bold text-blue-400">
-                        <span>胜率: 54.0%</span>
-                        <span class="text-[10px] text-gray-600 font-normal italic">攻略更新中...</span>
-                    </div>
-                </div>
-            </div>
+        <div class="glass p-4">
+          <h2 class="section-title"><i class="fa-solid fa-fire"></i> 上分推荐（先驱）</h2>
+          <ul class="space-y-2 text-sm">
+            <li class="flex justify-between"><span>幽鬼</span><span class="text-emerald-400">55.6%</span></li>
+            <li class="flex justify-between"><span>冥魂大帝</span><span class="text-emerald-400">55.2%</span></li>
+            <li class="flex justify-between"><span>剃刀</span><span class="text-emerald-400">53.8%</span></li>
+            <li class="flex justify-between"><span>混沌骑士</span><span class="text-emerald-400">53.7%</span></li>
+            <li class="flex justify-between"><span>巫妖</span><span class="text-emerald-400">53.5%</span></li>
+          </ul>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Match History -->
-            <div class="lg:col-span-2 space-y-4">
-                <h3 class="text-xl font-bold uppercase tracking-widest text-gray-500 flex items-center gap-2">
-                    <i class="fa-solid fa-clock-rotate-left"></i> Recent 10 Matches
-                </h3>
-                <div class="space-y-3">
-                    <!-- Match 1 (Spectre) -->
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-purple-500 cursor-pointer hover:bg-white/5" onclick="window.location.href='spectre_guide.html'">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/spectre.png" alt="Spectre" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-purple-400">幽鬼攻略 (Spectre)</h4>
-                                <p class="text-xs text-gray-500">7.40c 大招回归，辉耀重塑</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Match 2 (Slark) -->
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-cyan-500 cursor-pointer hover:bg-white/5" onclick="window.location.href='slark_guide.html'">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/slark.png" alt="Slark" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-cyan-400">斯拉克攻略 (Slark)</h4>
-                                <p class="text-xs text-gray-500">7.40c 先天属性掠夺，切入之王</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Match 3 (Drow) -->
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-blue-500 cursor-pointer hover:bg-white/5" onclick="window.location.href='drow_ranger_guide.html'">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/drow_ranger.png" alt="Drow Ranger" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-blue-400">卓尔游侠攻略 (Drow Ranger)</h4>
-                                <p class="text-xs text-gray-500">远程火力压制，后期破防大师</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Match History Start -->
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-green-500">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/razor.png" alt="Razor" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold">Razor</h4>
-                                <p class="text-xs text-gray-500">2026-03-07 22:47 | 天梯</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-green-400 font-bold italic">WIN</p>
-                            <p class="text-xs text-gray-400">10 / 10 / 21</p>
-                        </div>
-                    </div>
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-red-500">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/windrunner.png" alt="Windranger" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold">Windranger</h4>
-                                <p class="text-xs text-gray-500">2026-03-06 22:39 | 天梯</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-red-400 font-bold italic">LOSS</p>
-                            <p class="text-xs text-gray-400">6 / 8 / 10</p>
-                        </div>
-                    </div>
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-green-500">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/slark.png" alt="Slark" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold">Slark</h4>
-                                <p class="text-xs text-gray-500">2026-03-06 21:47 | 天梯</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-green-400 font-bold italic">WIN</p>
-                            <p class="text-xs text-gray-400">10 / 5 / 17</p>
-                        </div>
-                    </div>
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-red-500">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/earthshaker.png" alt="Earthshaker" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold">Earthshaker</h4>
-                                <p class="text-xs text-gray-500">2026-03-06 21:00 | 天梯</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-red-400 font-bold italic">LOSS</p>
-                            <p class="text-xs text-gray-400">4 / 11 / 15</p>
-                        </div>
-                    </div>
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-green-500">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/slark.png" alt="Slark" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold">Slark</h4>
-                                <p class="text-xs text-gray-500">2026-03-06 19:52 | 天梯</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-green-400 font-bold italic">WIN</p>
-                            <p class="text-xs text-gray-400">6 / 7 / 16</p>
-                        </div>
-                    </div>
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-red-500">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/earthshaker.png" alt="Earthshaker" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold">Earthshaker</h4>
-                                <p class="text-xs text-gray-500">2026-03-06 19:13 | 天梯</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-red-400 font-bold italic">LOSS</p>
-                            <p class="text-xs text-gray-400">1 / 5 / 4</p>
-                        </div>
-                    </div>
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-green-500">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/slark.png" alt="Slark" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold">Slark</h4>
-                                <p class="text-xs text-gray-500">2026-03-05 22:55 | 天梯</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-green-400 font-bold italic">WIN</p>
-                            <p class="text-xs text-gray-400">15 / 8 / 20</p>
-                        </div>
-                    </div>
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-red-500">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/spectre.png" alt="Spectre" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold">Spectre</h4>
-                                <p class="text-xs text-gray-500">2026-03-05 21:27 | 天梯</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-red-400 font-bold italic">LOSS</p>
-                            <p class="text-xs text-gray-400">11 / 8 / 10</p>
-                        </div>
-                    </div>
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-green-500">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/earthshaker.png" alt="Earthshaker" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold">Earthshaker</h4>
-                                <p class="text-xs text-gray-500">2026-03-05 20:29 | 天梯</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-green-400 font-bold italic">WIN</p>
-                            <p class="text-xs text-gray-400">10 / 7 / 20</p>
-                        </div>
-                    </div>
-                    <div class="card-glass p-4 rounded-lg flex items-center justify-between border-l-4 border-red-500">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded overflow-hidden">
-                                <img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/spectre.png" alt="Spectre" class="opacity-80">
-                            </div>
-                            <div>
-                                <h4 class="font-bold">Spectre</h4>
-                                <p class="text-xs text-gray-500">2026-03-05 19:22 | 天梯</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-red-400 font-bold italic">LOSS</p>
-                            <p class="text-xs text-gray-400">15 / 5 / 17</p>
-                        </div>
-                    </div>
-
-            <!-- Insights & Meta -->
-            <div class="space-y-8">
-                <div>
-                    <h3 class="text-xl font-bold uppercase tracking-widest text-gray-500 mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-brain"></i> AI Coach Insights
-                    </h3>
-                    <div class="bg-red-900/10 border border-red-500/20 p-6 rounded-xl">
-                        <p class="text-red-400 font-bold mb-2 uppercase text-sm">💡 Focus: High Ground Defense</p>
-                        <p class="text-gray-300 text-sm leading-relaxed mb-4">
-                            Andy, 今晚的幽鬼局整体胜率依然不错，但在高地防守时需要更注意切入时机。新版本 7.40c 下，幽鬼的敏捷成长极高，后期输出完全溢出，关键在于买活后的 Haunt 降临。
-                        </p>
-                        <ul class="text-xs text-gray-500 space-y-2">
-                            <li>• 连胜终结提醒: 休息一下再战</li>
-                            <li>• 补刀效率保持在 500GPM+</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-xl font-bold uppercase tracking-widest text-gray-500 mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-fire"></i> Signature Heroes
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center text-sm">
-                            <span>卓尔游侠 (Drow)</span>
-                            <span class="text-gray-400">48.3% Win</span>
-                        </div>
-                        <div class="progress-bar h-1"><div class="progress-fill" style="width: 48%"></div></div>
-                        
-                        <div class="flex justify-between items-center text-sm">
-                            <span>幽鬼 (Spectre)</span>
-                            <span class="text-green-400">53.6% Win</span>
-                        </div>
-                        <div class="progress-bar h-1"><div class="progress-fill" style="width: 54%"></div></div>
-
-                        <div class="flex justify-between items-center text-sm">
-                            <span>斯拉克 (Slark)</span>
-                            <span class="text-green-400">53.3% Win</span>
-                        </div>
-                        <div class="progress-bar h-1"><div class="progress-fill" style="width: 53%"></div></div>
-                    </div>
-                </div>
-            </div>
+        <div class="glass p-4">
+          <h2 class="section-title"><i class="fa-solid fa-brain"></i> 焦糖战术建议</h2>
+          <ul class="meta space-y-2 leading-5">
+            <li>• 先把主池收敛到「幽鬼 + 斯拉克」，上分效率最高。</li>
+            <li>• 撼地者当前胜率偏低，建议只在阵容合适时拿。</li>
+            <li>• 10~14 分钟看局势决定是否出点金，别无脑憋。</li>
+          </ul>
         </div>
+      </div>
+    </section>
 
-        <footer class="mt-16 pt-8 border-t border-gray-800 text-center text-gray-600 text-sm">
-            <p>Generated by <span class="text-red-500 font-bold">Jiaotang Swarm</span> | Data via OpenDota & Stratz</p>
-        </footer>
-    </div>
+    <footer class="footer">Generated by Jiaotang 🍮 · Data via OpenDota</footer>
+  </div>
 </body>
 </html>

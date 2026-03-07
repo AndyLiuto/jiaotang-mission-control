@@ -1,155 +1,223 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <title>焦糖 Mission Control</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * { box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #eef2f1; transition: transform 0.2s; }
-        .card:hover { transform: translateY(-2px); }
-        h1 { color: #d97706; margin-bottom: 30px; font-size: 24px; display: flex; align-items: center; gap: 10px; }
-        h2 { font-size: 18px; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px; margin-top: 0; color: #1f2937; display: flex; align-items: center; gap: 8px; }
-        .status { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
-        .status-live { background: #fee2e2; color: #991b1b; animation: blink 1s infinite; }
-        .status-upcoming { background: #dbeafe; color: #1e40af; }
-        .status-done { background: #f3f4f6; color: #6b7280; }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        .section-sub { font-size: 14px; font-weight: bold; color: #9a3412; margin: 15px 0 8px 0; display: flex; align-items: center; justify-content: space-between; }
-        .match-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #e5e7eb; }
-        .match-info { flex: 1; }
-        .match-opponent { font-weight: 600; font-size: 14px; display: block; }
-        .match-date { font-size: 11px; color: #6b7280; margin-top: 2px; }
-        .match-score { font-family: monospace; font-weight: bold; color: #1f2937; background: #f9fafb; padding: 2px 6px; border-radius: 4px; }
-        .task-meta { font-size: 11px; color: #6b7280; margin-top: 5px; line-height: 1.4; }
-        .stock-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9fafb; }
-        .stock-name { font-size: 14px; font-weight: 500; }
-        .stock-price { font-weight: 700; text-align: right; }
-        .stock-pct { font-size: 11px; font-weight: bold; }
-        .up { color: #ef4444; }
-        .down { color: #22c55e; }
-        .footer { text-align: center; margin-top: 40px; color: #9ca3af; font-size: 11px; letter-spacing: 1px; }
-        .link-btn { display: inline-block; background: #d97706; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; margin-top: 15px; }
-        .link-btn:hover { background: #b45309; }
-        .summary-box { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 15px; border-radius: 12px; text-align: center; margin-top: 10px; }
-        .summary-value { font-size: 24px; font-weight: bold; color: #1f2937; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <title>焦糖 Mission Control</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: rgba(16, 24, 44, 0.72);
+      --panel-border: rgba(148, 163, 184, 0.16);
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --brand: #f59e0b;
+      --up: #ef4444;
+      --down: #22c55e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 85% -20%, rgba(245, 158, 11, 0.18), transparent 55%),
+        radial-gradient(900px 500px at -10% 100%, rgba(59, 130, 246, 0.18), transparent 55%),
+        var(--bg);
+      padding: 28px 18px 40px;
+    }
+    .wrap { max-width: 1160px; margin: 0 auto; }
+    .hero {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      margin-bottom: 18px;
+    }
+    .title {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 30px; font-weight: 800; letter-spacing: .2px;
+    }
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 10px; border-radius: 999px;
+      background: rgba(16, 185, 129, 0.15); color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      font-size: 12px; font-weight: 700;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, .25);
+    }
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 16px; font-weight: 800;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .stock-row, .match-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px dashed rgba(148, 163, 184, .2);
+    }
+    .stock-row:last-child, .match-row:last-child { border-bottom: none; }
+    .stock-name { font-size: 13px; color: #cbd5e1; }
+    .stock-price { text-align: right; font-weight: 800; }
+    .stock-pct { font-size: 12px; font-weight: 700; }
+    .up { color: var(--up); }
+    .down { color: var(--down); }
+    .sub {
+      margin-top: 8px;
+      font-size: 12px; color: var(--muted);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid;
+    }
+    .tag-live { color: #fca5a5; border-color: rgba(239,68,68,.4); background: rgba(239,68,68,.12); }
+    .tag-next { color: #93c5fd; border-color: rgba(59,130,246,.45); background: rgba(59,130,246,.12); }
+    .tag-done { color: #cbd5e1; border-color: rgba(148,163,184,.35); background: rgba(148,163,184,.1); }
+    .cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      background: linear-gradient(90deg, #f59e0b, #fb923c);
+      color: #111827;
+      font-size: 13px; font-weight: 800;
+    }
+    .summary {
+      margin-top: 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(245, 158, 11, .25);
+      background: linear-gradient(145deg, rgba(245,158,11,.14), rgba(251,146,60,.08));
+      padding: 14px;
+      text-align: center;
+    }
+    .summary .label { color: #fde68a; font-size: 12px; }
+    .summary .value { font-size: 30px; font-weight: 900; line-height: 1.1; }
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: .8px;
+    }
+  </style>
 </head>
 <body>
-    <h1><span class="text-3xl">🍮</span> 焦糖 Mission Control</h1>
+  <div class="wrap">
+    <div class="hero">
+      <div class="title"><span class="text-4xl">🍮</span> 焦糖 Mission Control</div>
+      <span class="pill"><i class="fa-solid fa-satellite-dish"></i> LIVE DASHBOARD</span>
+    </div>
 
     <div class="grid">
-        <!-- 市场监控 -->
-        <div class="card" style="border-top: 4px solid #3b82f6;">
-            <h2><i class="fa-solid fa-chart-line"></i> 市场实时监控</h2>
-            <div class="stock-row">
-                <div class="stock-name">沪深300ETF (510300)</div>
-                <div class="stock-price text-right">
-                    <div class="up">4.669</div>
-                    <div class="stock-pct up">+1.28%</div>
-                </div>
-            </div>
-            <div class="stock-row">
-                <div class="stock-name">医疗ETF (512170)</div>
-                <div class="stock-price text-right">
-                    <div class="up">0.337</div>
-                    <div class="stock-pct up">+0.90%</div>
-                </div>
-            </div>
-            <div class="stock-row">
-                <div class="stock-name">医药ETF (512010)</div>
-                <div class="stock-price text-right">
-                    <div class="up">0.365</div>
-                    <div class="stock-pct up">+1.11%</div>
-                </div>
-            </div>
-            <div class="stock-row">
-                <div class="stock-name">隆基绿能 (601012)</div>
-                <div class="stock-price text-right">
-                    <div class="up">17.87</div>
-                    <div class="stock-pct up">+1.19%</div>
-                </div>
-            </div>
-            <div class="stock-row">
-                <div class="stock-name">中国东航 (600115)</div>
-                <div class="stock-price text-right">
-                    <div class="down">5.14</div>
-                    <div class="stock-pct down">-1.72%</div>
-                </div>
-            </div>
-            <div class="stock-row border-none">
-                <div class="stock-name">TE Connectivity (TEL.US)</div>
-                <div class="stock-price text-right">
-                    <div class="up">209.02</div>
-                    <div class="stock-pct up">+2.33%</div>
-                </div>
-            </div>
-            <div class="task-meta mt-4 flex justify-between items-center">
-                <span>🕒 更新: 2026-03-05 11:30 CST</span>
-                <span class="text-blue-500 font-bold">午间休市</span>
-            </div>
+      <!-- 市场 -->
+      <section class="card">
+        <h2><i class="fa-solid fa-chart-line text-blue-400"></i> 市场实时监控</h2>
+
+        <div class="stock-row">
+          <div class="stock-name">沪深300ETF (510300)</div>
+          <div class="stock-price"><div class="up">4.669</div><div class="stock-pct up">+1.28%</div></div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-name">医疗ETF (512170)</div>
+          <div class="stock-price"><div class="up">0.337</div><div class="stock-pct up">+0.90%</div></div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-name">医药ETF (512010)</div>
+          <div class="stock-price"><div class="up">0.365</div><div class="stock-pct up">+1.11%</div></div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-name">隆基绿能 (601012)</div>
+          <div class="stock-price"><div class="up">17.87</div><div class="stock-pct up">+1.19%</div></div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-name">中国东航 (600115)</div>
+          <div class="stock-price"><div class="down">5.14</div><div class="stock-pct down">-1.72%</div></div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-name">TE Connectivity (TEL.US)</div>
+          <div class="stock-price"><div class="up">209.02</div><div class="stock-pct up">+2.33%</div></div>
         </div>
 
-        <!-- 体育中心 -->
-        <div class="card" style="border-top: 4px solid #ef4444;">
-            <h2><i class="fa-solid fa-trophy"></i> 体育战略中心</h2>
-            <div class="section-sub">
-                <span><i class="fa-regular fa-futbol"></i> 阿森纳 Arsenal</span>
-                <span class="status status-done">FT: 1-2</span>
-            </div>
-            <div class="match-row">
-                <div class="match-info">
-                    <span class="match-opponent">vs 布莱顿 (Brighton)</span>
-                    <span class="match-date">3月5日 03:45 · 英超 · 客场</span>
-                </div>
-                <div class="match-score">1-2</div>
-            </div>
+        <div class="sub">
+          <span>🕒 更新: 2026-03-08 00:26 CST</span>
+          <span class="tag tag-next">周末休市</span>
+        </div>
+      </section>
 
-            <div class="section-sub mt-4">
-                <span><i class="fa-solid fa-gamepad"></i> Xtreme Gaming (Dota 2)</span>
-                <span class="status status-upcoming">Next: 3/6</span>
-            </div>
-             <div class="match-row">
-                <div class="match-info">
-                    <span class="match-opponent">PGL Wallachia S1</span>
-                    <span class="match-date">关注 3月6-15日 罗马尼亚线下赛</span>
-                </div>
-            </div>
-            
-            <a href="dota2.html" class="link-btn">进入 Dota 2 战绩看板 →</a>
+      <!-- 体育 -->
+      <section class="card">
+        <h2><i class="fa-solid fa-trophy text-red-400"></i> 体育战略中心</h2>
+
+        <div class="sub" style="margin-top:0">
+          <span><i class="fa-regular fa-futbol"></i> 阿森纳 Arsenal</span>
+          <span class="tag tag-done">NEWS</span>
+        </div>
+        <div class="match-row">
+          <div>
+            <div class="font-semibold text-sm">Eze stunner spares Arsenal from Mansfield …</div>
+            C月08日 00:26 · 枪手资讯</div>
+          </div>
+          <div class="font-mono font-bold">📰</div>
         </div>
 
-        <!-- 账户与策略 -->
-        <div class="card" style="border-top: 4px solid #10b981;">
-            <h2><i class="fa-solid fa-vault"></i> 资产管理策略</h2>
-            <div class="summary-box">
-                <p class="text-gray-600 text-xs mb-1">TEL ESPP 目标位</p>
-                <div class="summary-value">$285.00</div>
-            </div>
-            <div class="mt-4 space-y-3">
-                <div class="flex justify-between text-sm">
-                    <span class="text-gray-500">隆基突破水位</span>
-                    <span class="font-semibold text-blue-600">18.60</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                    <span class="text-gray-500">红利入场水位</span>
-                    <span class="font-semibold text-orange-600">1.165</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                    <span class="text-gray-500">下个卖旧买新日</span>
-                    <span class="font-semibold text-gray-700">3月11日 (周三)</span>
-                </div>
-            </div>
+        <div class="sub">
+          <span><i class="fa-solid fa-gamepad"></i> Xtreme Gaming (Dota 2)</span>
+          <span class="tag tag-next">Next 03/07</span>
         </div>
+        <div class="match-row">
+          <div>
+            <div class="font-semibold text-sm">vs Team Spirit</div>
+            C-07 19:45 · PGL/Wallachia/7/Group Stage#Round 1</div>
+          </div>
+        </div>
+
+        <a href="dota2.html" class="cta"><i class="fa-solid fa-joystick"></i> 进入 Dota 2 战绩看板</a>
+      </section>
+
+      <!-- 资产 -->
+      <section class="card">
+        <h2><i class="fa-solid fa-vault text-emerald-400"></i> 资产管理策略</h2>
+
+        <div class="summary">
+          <div class="label">TEL ESPP 目标位</div>
+          <div class="value">$285.00</div>
+        </div>
+
+        <div class="stock-row" style="margin-top:8px">
+          <div class="stock-name">隆基突破水位</div>
+          <div class="font-semibold text-blue-300">18.60</div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-name">红利入场水位</div>
+          <div class="font-semibold text-amber-300">1.165</div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-name">下个卖旧买新日</div>
+          <div class="font-semibold text-slate-200">3月11日 (周三)</div>
+        </div>
+      </section>
     </div>
 
-    <div class="footer">
-        POWERED BY OPENCLAW · CORE AGENT: CARAMEL (焦糖)
-    </div>
+    <div class="footer">POWERED BY OPENCLAW · CORE AGENT: CARAMEL (焦糖)</div>
+  </div>
 </body>
 </html>
